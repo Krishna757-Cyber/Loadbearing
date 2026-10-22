@@ -44,8 +44,8 @@ export function Atmosphere({ sunDirRef }: AtmosphereProps) {
   const uniforms = useMemo(
     () => ({
       uSunDir: { value: new THREE.Vector3(1, 0, 0) },
-      uDayGlow: { value: new THREE.Color("#FFC66B") },
-      uNightGlow: { value: new THREE.Color("#4B55A8") },
+      uDayGlow: { value: new THREE.Color("#4BA2FF") },
+      uNightGlow: { value: new THREE.Color("#2E3875") },
     }),
     [],
   );

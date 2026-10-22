@@ -6,10 +6,9 @@
 
 import { useRef, useEffect, useState } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { OrbitControls, PerformanceMonitor } from "@react-three/drei";
+import { OrbitControls, PerformanceMonitor, Stars } from "@react-three/drei";
 import * as THREE from "three";
-import { Ocean } from "./Ocean";
-import { LandDots } from "./LandDots";
+import { EarthReplica } from "./EarthReplica";
 import { Atmosphere } from "./Atmosphere";
 import { Pillars } from "./Pillars";
 import { Tokens } from "./Tokens";
@@ -122,8 +121,8 @@ function SceneContent() {
       <ambientLight intensity={0.15} />
       <directionalLight position={[5, 3, 5]} intensity={0.3} />
 
-      <Ocean sunDirRef={sunDirRef} />
-      <LandDots sunDirRef={sunDirRef} reduced={reducedDots} />
+      <Stars radius={60} depth={40} count={1200} factor={3} saturation={0} fade speed={0.8} />
+      <EarthReplica sunDirRef={sunDirRef} />
       <Atmosphere sunDirRef={sunDirRef} />
 
       {household && (
