@@ -123,6 +123,8 @@ export interface HouseholdData {
 }
 
 export type SceneMode = "3d" | "2d";
+export type SupportedLanguage = "en" | "hi" | "es" | "fr" | "de" | "ja";
+export type ThemeMode = "dark" | "light" | "custom-cyberpunk" | "custom-emerald" | "custom-rose";
 
 export interface AppStore {
   // Data
@@ -131,7 +133,8 @@ export interface AppStore {
 
   // UI
   viewerId: string;
-  language: "en" | "hi";
+  language: SupportedLanguage;
+  themeMode: ThemeMode;
   sceneMode: SceneMode;
   drawerOpen: boolean;
   activeView: "map" | "handoffs" | "brief" | "privacy";
@@ -151,7 +154,8 @@ export interface AppStore {
   // Actions
   setHousehold: (data: HouseholdData) => void;
   setViewerId: (id: string) => void;
-  setLanguage: (lang: "en" | "hi") => void;
+  setLanguage: (lang: SupportedLanguage) => void;
+  setThemeMode: (theme: ThemeMode) => void;
   setSceneMode: (mode: SceneMode) => void;
   setDrawerOpen: (open: boolean) => void;
   setActiveView: (view: "map" | "handoffs" | "brief" | "privacy") => void;
@@ -173,6 +177,7 @@ export const useAppStore = create<AppStore>((set) => ({
   version: 0,
   viewerId: "priya",
   language: "en",
+  themeMode: "dark",
   sceneMode: "3d",
   drawerOpen: false,
   activeView: "map",
@@ -201,6 +206,13 @@ export const useAppStore = create<AppStore>((set) => ({
     }),
   setViewerId: (id) => set({ viewerId: id }),
   setLanguage: (lang) => set({ language: lang }),
+  setThemeMode: (theme) => {
+    if (typeof document !== "undefined") {
+      document.documentElement.classList.remove("dark", "light", "custom-cyberpunk", "custom-emerald", "custom-rose");
+      document.documentElement.classList.add(theme);
+    }
+    set({ themeMode: theme });
+  },
   setSceneMode: (mode) => set({ sceneMode: mode }),
   setDrawerOpen: (open) => set({ drawerOpen: open }),
   setActiveView: (view) => set({ activeView: view }),

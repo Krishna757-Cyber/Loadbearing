@@ -8,15 +8,22 @@ import {
   Sliders,
   ChevronDown,
   Inbox,
+  Sun,
+  Moon,
+  Palette,
+  Check,
 } from "lucide-react";
 import { useAppStore } from "@/store";
 import { ClockScrubber } from "./ClockScrubber";
+import { t, LANGUAGES, type SupportedLanguage } from "@/lib/i18n";
 
 export function TopBar() {
   const viewerId = useAppStore((s) => s.viewerId);
   const setViewerId = useAppStore((s) => s.setViewerId);
   const language = useAppStore((s) => s.language);
   const setLanguage = useAppStore((s) => s.setLanguage);
+  const themeMode = useAppStore((s) => s.themeMode);
+  const setThemeMode = useAppStore((s) => s.setThemeMode);
   const activeView = useAppStore((s) => s.activeView);
   const setActiveView = useAppStore((s) => s.setActiveView);
   const household = useAppStore((s) => s.household);
@@ -33,6 +40,8 @@ export function TopBar() {
 
   const [a11yMenuOpen, setA11yMenuOpen] = useState(false);
   const [viewMenuOpen, setViewMenuOpen] = useState(false);
+  const [langMenuOpen, setLangMenuOpen] = useState(false);
+  const [themeMenuOpen, setThemeMenuOpen] = useState(false);
 
   // Compute consent count
   const caregivers = household?.members.filter((m) => m.role === "caregiver") ?? [];
@@ -71,7 +80,7 @@ export function TopBar() {
 
             {/* Tagline */}
             <span className="text-[10px] text-[#EDEAF6]/90 font-medium tracking-normal whitespace-nowrap hidden sm:inline">
-              Care shared fairly. Nothing falls between people.
+              {t("brandTagline", language)}
             </span>
           </div>
         </div>
@@ -80,10 +89,10 @@ export function TopBar() {
         <nav className="flex items-center gap-1 bg-[#262B52] border border-[#3A4178] p-0.5 rounded-lg text-xs">
           {(
             [
-              { id: "map", label: "Globe" },
-              { id: "handoffs", label: "Handoffs" },
-              { id: "brief", label: "Brief" },
-              { id: "privacy", label: "Privacy" },
+              { id: "map", label: t("globe", language) },
+              { id: "handoffs", label: t("handoffs", language) },
+              { id: "brief", label: t("brief", language) },
+              { id: "privacy", label: t("privacy", language) },
             ] as const
           ).map((tab) => (
             <button
@@ -159,15 +168,165 @@ export function TopBar() {
           )}
         </div>
 
-        {/* Language Toggle */}
-        <button
-          onClick={() => setLanguage(language === "en" ? "hi" : "en")}
-          className="flex items-center gap-1 px-2 py-1 rounded-lg bg-[#262B52] border border-[#3A4178] text-xs text-[#EDEAF6] hover:border-[#FFC66B] transition-colors"
-          title="Toggle English / Hindi"
-        >
-          <Languages className="w-3.5 h-3.5 text-[#9AA3D6]" />
-          <span className="font-medium">{language === "en" ? "हिन्दी" : "English"}</span>
-        </button>
+        {/* Language Dropdown (International) */}
+        <div className="relative">
+          <button
+            onClick={() => {
+              setLangMenuOpen(!langMenuOpen);
+              setThemeMenuOpen(false);
+              setViewMenuOpen(false);
+              setA11yMenuOpen(false);
+            }}
+            className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[#262B52] border border-[#3A4178] text-xs text-[#EDEAF6] hover:border-[#FFC66B] transition-colors"
+            title="Select Language / भाषा चुनें"
+          >
+            <Languages className="w-3.5 h-3.5 text-[#FFC66B]" />
+            <span className="font-medium">
+              {LANGUAGES.find((l) => l.code === language)?.flag}{" "}
+              {LANGUAGES.find((l) => l.code === language)?.nativeName}
+            </span>
+            <ChevronDown className="w-3 h-3 text-[#9AA3D6]" />
+          </button>
+
+          {langMenuOpen && (
+            <div className="absolute right-0 mt-1 w-44 bg-[#262B52] border border-[#3A4178] rounded-lg shadow-xl py-1 z-50 text-xs">
+              <div className="px-3 py-1 text-[10px] uppercase text-[#9AA3D6] tracking-wider font-semibold">
+                Language / भाषा
+              </div>
+              {LANGUAGES.map((l) => (
+                <button
+                  key={l.code}
+                  onClick={() => {
+                    setLanguage(l.code);
+                    setLangMenuOpen(false);
+                  }}
+                  className={`w-full text-left px-3 py-1.5 flex items-center justify-between hover:bg-[#3A4178] ${
+                    language === l.code ? "text-[#FFC66B] font-semibold bg-[#14182B]/60" : "text-[#EDEAF6]"
+                  }`}
+                >
+                  <span className="flex items-center gap-2">
+                    <span>{l.flag}</span>
+                    <span>{l.nativeName}</span>
+                  </span>
+                  <span className="text-[10px] text-[#9AA3D6] uppercase font-mono">{l.code}</span>
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Theme Mode Selector (Dark, Light, Custom) */}
+        <div className="relative">
+          <button
+            onClick={() => {
+              setThemeMenuOpen(!themeMenuOpen);
+              setLangMenuOpen(false);
+              setViewMenuOpen(false);
+              setA11yMenuOpen(false);
+            }}
+            className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[#262B52] border border-[#3A4178] text-xs text-[#EDEAF6] hover:border-[#FFC66B] transition-colors"
+            title="Theme Mode: Dark, Light, Custom"
+          >
+            {themeMode === "light" ? (
+              <Sun className="w-3.5 h-3.5 text-[#FFC66B]" />
+            ) : themeMode === "dark" ? (
+              <Moon className="w-3.5 h-3.5 text-[#9AA3D6]" />
+            ) : (
+              <Palette className="w-3.5 h-3.5 text-[#FFC66B]" />
+            )}
+            <span className="hidden sm:inline capitalize">
+              {themeMode === "dark" ? t("dark", language) : themeMode === "light" ? t("light", language) : t("custom", language)}
+            </span>
+            <ChevronDown className="w-3 h-3 text-[#9AA3D6]" />
+          </button>
+
+          {themeMenuOpen && (
+            <div className="absolute right-0 mt-1 w-48 bg-[#262B52] border border-[#3A4178] rounded-lg shadow-xl py-1 z-50 text-xs">
+              <div className="px-3 py-1 text-[10px] uppercase text-[#9AA3D6] tracking-wider font-semibold">
+                {t("theme", language)}
+              </div>
+              <button
+                onClick={() => {
+                  setThemeMode("dark");
+                  setThemeMenuOpen(false);
+                }}
+                className={`w-full text-left px-3 py-1.5 flex items-center justify-between hover:bg-[#3A4178] ${
+                  themeMode === "dark" ? "text-[#FFC66B] font-semibold bg-[#14182B]/60" : "text-[#EDEAF6]"
+                }`}
+              >
+                <span className="flex items-center gap-2">
+                  <Moon className="w-3.5 h-3.5 text-[#9AA3D6]" />
+                  <span>{t("dark", language)}</span>
+                </span>
+                {themeMode === "dark" && <Check className="w-3.5 h-3.5 text-[#FFC66B]" />}
+              </button>
+              <button
+                onClick={() => {
+                  setThemeMode("light");
+                  setThemeMenuOpen(false);
+                }}
+                className={`w-full text-left px-3 py-1.5 flex items-center justify-between hover:bg-[#3A4178] ${
+                  themeMode === "light" ? "text-[#FFC66B] font-semibold bg-[#14182B]/60" : "text-[#EDEAF6]"
+                }`}
+              >
+                <span className="flex items-center gap-2">
+                  <Sun className="w-3.5 h-3.5 text-[#FFC66B]" />
+                  <span>{t("light", language)}</span>
+                </span>
+                {themeMode === "light" && <Check className="w-3.5 h-3.5 text-[#FFC66B]" />}
+              </button>
+              <div className="border-t border-[#3A4178] my-1" />
+              <div className="px-3 py-0.5 text-[10px] uppercase text-[#9AA3D6] tracking-wider font-semibold">
+                {t("custom", language)} Themes
+              </div>
+              <button
+                onClick={() => {
+                  setThemeMode("custom-cyberpunk");
+                  setThemeMenuOpen(false);
+                }}
+                className={`w-full text-left px-3 py-1.5 flex items-center justify-between hover:bg-[#3A4178] ${
+                  themeMode === "custom-cyberpunk" ? "text-[#FFC66B] font-semibold bg-[#14182B]/60" : "text-[#EDEAF6]"
+                }`}
+              >
+                <span className="flex items-center gap-2">
+                  <span className="w-2.5 h-2.5 rounded-full bg-[#F43F5E]" />
+                  <span>{t("neonCyber", language)}</span>
+                </span>
+                {themeMode === "custom-cyberpunk" && <Check className="w-3.5 h-3.5 text-[#FFC66B]" />}
+              </button>
+              <button
+                onClick={() => {
+                  setThemeMode("custom-emerald");
+                  setThemeMenuOpen(false);
+                }}
+                className={`w-full text-left px-3 py-1.5 flex items-center justify-between hover:bg-[#3A4178] ${
+                  themeMode === "custom-emerald" ? "text-[#FFC66B] font-semibold bg-[#14182B]/60" : "text-[#EDEAF6]"
+                }`}
+              >
+                <span className="flex items-center gap-2">
+                  <span className="w-2.5 h-2.5 rounded-full bg-[#10B981]" />
+                  <span>{t("emeraldForest", language)}</span>
+                </span>
+                {themeMode === "custom-emerald" && <Check className="w-3.5 h-3.5 text-[#FFC66B]" />}
+              </button>
+              <button
+                onClick={() => {
+                  setThemeMode("custom-rose");
+                  setThemeMenuOpen(false);
+                }}
+                className={`w-full text-left px-3 py-1.5 flex items-center justify-between hover:bg-[#3A4178] ${
+                  themeMode === "custom-rose" ? "text-[#FFC66B] font-semibold bg-[#14182B]/60" : "text-[#EDEAF6]"
+                }`}
+              >
+                <span className="flex items-center gap-2">
+                  <span className="w-2.5 h-2.5 rounded-full bg-[#FB7185]" />
+                  <span>{t("roseTwilight", language)}</span>
+                </span>
+                {themeMode === "custom-rose" && <Check className="w-3.5 h-3.5 text-[#FFC66B]" />}
+              </button>
+            </div>
+          )}
+        </div>
 
         {/* Accessibility Menu */}
         <div className="relative">

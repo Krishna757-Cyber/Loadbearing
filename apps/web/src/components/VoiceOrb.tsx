@@ -3,6 +3,7 @@
 import React, { useState, useRef } from "react";
 import { Mic, Send, Sparkles, Check, X, Volume2 } from "lucide-react";
 import { useAppStore } from "@/store";
+import { t, getLocaleForLanguage } from "@/lib/i18n";
 
 interface SpeechRecognitionInstance extends EventTarget {
   continuous: boolean;
@@ -47,7 +48,7 @@ export function VoiceOrb() {
     try {
       window.speechSynthesis.cancel();
       const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = language === "hi" ? "hi-IN" : "en-IN";
+      utterance.lang = getLocaleForLanguage(language);
       window.speechSynthesis.speak(utterance);
     } catch {
       // Speech synthesis unsupported or blocked
@@ -203,7 +204,7 @@ export function VoiceOrb() {
       const rec = new SpeechRecognitionAPI();
       rec.continuous = false;
       rec.interimResults = true;
-      rec.lang = language === "hi" ? "hi-IN" : "en-IN";
+      rec.lang = getLocaleForLanguage(language);
 
       rec.onresult = (event) => {
         const text = event.results[event.resultIndex]?.[0]?.transcript ?? "";
@@ -285,13 +286,13 @@ export function VoiceOrb() {
                 onClick={() => handleConsent(false)}
                 className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-[#14182B] border border-[#3A4178] text-[#9AA3D6] hover:text-[#EDEAF6] text-xs font-semibold"
               >
-                <X className="w-3.5 h-3.5" /> Keep Private
+                <X className="w-3.5 h-3.5" /> {t("keepPrivate", language)}
               </button>
               <button
                 onClick={() => handleConsent(true)}
                 className="flex items-center gap-1 px-4 py-1.5 rounded-lg bg-[#FFC66B] text-[#14182B] text-xs font-semibold hover:bg-[#FFD285]"
               >
-                <Check className="w-3.5 h-3.5 stroke-[3]" /> Share with Family
+                <Check className="w-3.5 h-3.5 stroke-[3]" /> {t("shareWithFamily", language)}
               </button>
             </div>
           )}
@@ -304,7 +305,7 @@ export function VoiceOrb() {
         <button
           onClick={() => setShowManualInput(!showManualInput)}
           className="p-2 rounded-full bg-[#262B52] border border-[#3A4178] text-[#9AA3D6] hover:text-[#EDEAF6] shadow-md transition-colors"
-          title="Type message instead"
+          title={t("typeInstead", language)}
         >
           <Send className="w-4 h-4" />
         </button>
@@ -317,7 +318,7 @@ export function VoiceOrb() {
               ? "bg-[#FFC66B] text-[#14182B] scale-105 shadow-[#FFC66B]/50 ring-4 ring-[#FFC66B]/30"
               : "bg-[#262B52] border-2 border-[#FFC66B] text-[#FFC66B] hover:scale-105 hover:bg-[#2A3160]"
           }`}
-          title={isListening ? "Listening... click to stop" : "Speak to Alexa+ Simulated Surface"}
+          title={isListening ? t("listening", language) : t("speakToAlexa", language)}
           aria-label={isListening ? "Stop listening" : "Start voice capture"}
         >
           {/* Animated pulse rings when listening */}
@@ -344,7 +345,7 @@ export function VoiceOrb() {
             type="text"
             value={manualText}
             onChange={(e) => setManualText(e.target.value)}
-            placeholder="Type a care note, memory or task..."
+            placeholder={t("typePlaceholder", language)}
             className="flex-1 bg-transparent px-3 py-1.5 text-xs text-[#EDEAF6] placeholder-[#9AA3D6]/50 outline-none"
           />
           <button

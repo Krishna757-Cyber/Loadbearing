@@ -5,10 +5,12 @@ import { ChevronRight, ChevronLeft, Inbox } from "lucide-react";
 import { useAppStore, computeSimNow, type HandoffState } from "@/store";
 import { HandoffRow } from "./HandoffRow";
 import { HandoffDetail } from "./HandoffDetail";
+import { t } from "@/lib/i18n";
 
 export function HandoffDrawer() {
   const household = useAppStore((s) => s.household);
   const viewerId = useAppStore((s) => s.viewerId);
+  const language = useAppStore((s) => s.language);
   const clockSkew = useAppStore((s) => s.clockSkew);
   const drawerOpen = useAppStore((s) => s.drawerOpen);
   const setDrawerOpen = useAppStore((s) => s.setDrawerOpen);
@@ -77,7 +79,7 @@ export function HandoffDrawer() {
         <div className="p-3 border-b border-[#3A4178] flex items-center justify-between">
           <div className="flex items-center gap-2">
             <h2 className="font-display font-semibold text-sm text-[#EDEAF6]">
-              Care Handoffs
+              {t("careHandoffs", language)}
             </h2>
             <span className="px-1.5 py-0.5 rounded-full bg-[#14182B] text-[10px] font-mono text-[#FFC66B]">
               {handoffs.length}
@@ -97,7 +99,7 @@ export function HandoffDrawer() {
                       : "text-[#9AA3D6] hover:text-[#EDEAF6]"
                   }`}
                 >
-                  {tab}
+                  {t(tab, language)}
                 </button>
               ))}
             </div>
@@ -116,9 +118,9 @@ export function HandoffDrawer() {
           {filteredHandoffs.length === 0 ? (
             <div className="h-48 flex flex-col items-center justify-center text-center p-4 text-[#9AA3D6]">
               <Inbox className="w-8 h-8 stroke-1 text-[#3A4178] mb-2" />
-              <p className="text-xs font-medium text-[#EDEAF6]">Nothing is waiting on anyone.</p>
+              <p className="text-xs font-medium text-[#EDEAF6]">{t("nothingWaiting", language)}</p>
               <p className="text-[11px] mt-1 text-[#9AA3D6]">
-                All care tasks and moments are in safe hands.
+                {t("allInSafeHands", language)}
               </p>
             </div>
           ) : (

@@ -48,6 +48,146 @@ html.high-contrast {
   --accent-lantern: #FFD285;
 }
 
+/* Light mode */
+html.light {
+  --bg-dusk: #F8FAFC;
+  --panel-horizon: #FFFFFF;
+  --border-line: #CBD5E1;
+  --text-mist: #0F172A;
+  --text-moon: #475569;
+  --accent-lantern: #D97706;
+  --accent-lantern-dark: #FFFFFF;
+}
+
+html.light header,
+html.light aside,
+html.light .bg-\[\#14182B\],
+html.light .bg-\[\#14182B\]\/90,
+html.light .bg-\[\#14182B\]\/85,
+html.light .bg-\[\#14182B\]\/95 {
+  background-color: #FFFFFF !important;
+}
+
+html.light .bg-\[\#262B52\],
+html.light .bg-\[\#262B52\]\/95,
+html.light .bg-\[\#262B52\]\/90 {
+  background-color: #F1F5F9 !important;
+}
+
+html.light .text-\[\#EDEAF6\] {
+  color: #0F172A !important;
+}
+
+html.light .text-\[\#9AA3D6\] {
+  color: #475569 !important;
+}
+
+html.light .border-\[\#3A4178\] {
+  border-color: #CBD5E1 !important;
+}
+
+/* Custom Cyberpunk */
+html.custom-cyberpunk {
+  --bg-dusk: #130722;
+  --panel-horizon: #240E42;
+  --border-line: #5B21B6;
+  --text-mist: #FAF5FF;
+  --text-moon: #C084FC;
+  --accent-lantern: #F43F5E;
+  --accent-lantern-dark: #130722;
+}
+
+html.custom-cyberpunk header,
+html.custom-cyberpunk aside,
+html.custom-cyberpunk .bg-\[\#14182B\],
+html.custom-cyberpunk .bg-\[\#14182B\]\/90,
+html.custom-cyberpunk .bg-\[\#14182B\]\/85,
+html.custom-cyberpunk .bg-\[\#14182B\]\/95 {
+  background-color: #130722 !important;
+}
+
+html.custom-cyberpunk .bg-\[\#262B52\],
+html.custom-cyberpunk .bg-\[\#262B52\]\/95,
+html.custom-cyberpunk .bg-\[\#262B52\]\/90 {
+  background-color: #240E42 !important;
+}
+
+html.custom-cyberpunk .border-\[\#3A4178\] {
+  border-color: #5B21B6 !important;
+}
+
+html.custom-cyberpunk .text-\[\#9AA3D6\] {
+  color: #C084FC !important;
+}
+
+/* Custom Emerald */
+html.custom-emerald {
+  --bg-dusk: #062419;
+  --panel-horizon: #0D3E2E;
+  --border-line: #15803D;
+  --text-mist: #F0FDF4;
+  --text-moon: #86EFAC;
+  --accent-lantern: #F59E0B;
+  --accent-lantern-dark: #062419;
+}
+
+html.custom-emerald header,
+html.custom-emerald aside,
+html.custom-emerald .bg-\[\#14182B\],
+html.custom-emerald .bg-\[\#14182B\]\/90,
+html.custom-emerald .bg-\[\#14182B\]\/85,
+html.custom-emerald .bg-\[\#14182B\]\/95 {
+  background-color: #062419 !important;
+}
+
+html.custom-emerald .bg-\[\#262B52\],
+html.custom-emerald .bg-\[\#262B52\]\/95,
+html.custom-emerald .bg-\[\#262B52\]\/90 {
+  background-color: #0D3E2E !important;
+}
+
+html.custom-emerald .border-\[\#3A4178\] {
+  border-color: #15803D !important;
+}
+
+html.custom-emerald .text-\[\#9AA3D6\] {
+  color: #86EFAC !important;
+}
+
+/* Custom Rose */
+html.custom-rose {
+  --bg-dusk: #250C15;
+  --panel-horizon: #3D1424;
+  --border-line: #BE185D;
+  --text-mist: #FFF1F2;
+  --text-moon: #FDA4AF;
+  --accent-lantern: #FB7185;
+  --accent-lantern-dark: #250C15;
+}
+
+html.custom-rose header,
+html.custom-rose aside,
+html.custom-rose .bg-\[\#14182B\],
+html.custom-rose .bg-\[\#14182B\]\/90,
+html.custom-rose .bg-\[\#14182B\]\/85,
+html.custom-rose .bg-\[\#14182B\]\/95 {
+  background-color: #250C15 !important;
+}
+
+html.custom-rose .bg-\[\#262B52\],
+html.custom-rose .bg-\[\#262B52\]\/95,
+html.custom-rose .bg-\[\#262B52\]\/90 {
+  background-color: #3D1424 !important;
+}
+
+html.custom-rose .border-\[\#3A4178\] {
+  border-color: #BE185D !important;
+}
+
+html.custom-rose .text-\[\#9AA3D6\] {
+  color: #FDA4AF !important;
+}
+
 html.high-contrast * {
   box-shadow: none !important;
   text-shadow: none !important;

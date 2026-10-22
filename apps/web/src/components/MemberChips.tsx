@@ -4,10 +4,12 @@ import React from "react";
 import { Moon } from "lucide-react";
 import { useAppStore, computeSimNow } from "@/store";
 import { DateTime } from "luxon";
+import { t } from "@/lib/i18n";
 
 export function MemberChips() {
   const household = useAppStore((s) => s.household);
   const viewerId = useAppStore((s) => s.viewerId);
+  const language = useAppStore((s) => s.language);
   const clockSkew = useAppStore((s) => s.clockSkew);
 
   const simNowMs = household?.clock ? computeSimNow(household.clock, clockSkew) : Date.now();
@@ -44,9 +46,9 @@ export function MemberChips() {
           >
             {/* Awake or asleep icon */}
             {isAwake ? (
-              <span className="w-2 h-2 rounded-full bg-[#FFC66B] shadow-[0_0_8px_#FFC66B]" title="Awake" />
+              <span className="w-2 h-2 rounded-full bg-[#FFC66B] shadow-[0_0_8px_#FFC66B]" title={t("awake", language)} />
             ) : (
-              <span title="Asleep"><Moon className="w-3 h-3 text-[#9AA3D6]" /></span>
+              <span title={t("asleep", language)}><Moon className="w-3 h-3 text-[#9AA3D6]" /></span>
             )}
 
             <div>
@@ -60,7 +62,7 @@ export function MemberChips() {
               {/* Time-zone tax detail */}
               {sleepTaxSum > 0 && (
                 <span className="text-[9px] text-[#FFC66B] block">
-                  +{sleepTaxSum.toFixed(1)} sleep tax (counted x2)
+                  +{sleepTaxSum.toFixed(1)} {t("sleepTax", language)}
                 </span>
               )}
             </div>
