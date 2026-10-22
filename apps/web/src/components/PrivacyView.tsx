@@ -6,10 +6,12 @@ import { useAppStore } from "@/store";
 
 export function PrivacyView() {
   const viewerId = useAppStore((s) => s.viewerId);
+  const themeMode = useAppStore((s) => s.themeMode);
   const household = useAppStore((s) => s.household);
   const addToast = useAppStore((s) => s.addToast);
   const setHousehold = useAppStore((s) => s.setHousehold);
 
+  const isLight = themeMode === "light";
   const [toggling, setToggling] = useState(false);
 
   const caregivers = household?.members.filter((m) => m.role === "caregiver") ?? [];
@@ -67,14 +69,20 @@ export function PrivacyView() {
   return (
     <div className="relative z-10 max-w-2xl mx-auto p-6 flex flex-col gap-6 text-xs select-none">
       {/* Consent Control Card */}
-      <div className="bg-[#262B52]/90 backdrop-blur border border-[#3A4178] rounded-2xl p-6 shadow-2xl space-y-4">
-        <div className="flex items-center gap-2 pb-3 border-b border-[#3A4178]">
+      <div
+        className={`rounded-2xl p-6 shadow-2xl space-y-4 border transition-colors ${
+          isLight
+            ? "bg-white/98 backdrop-blur border-slate-200 text-slate-900"
+            : "bg-[#262B52]/90 backdrop-blur border-[#3A4178] text-[#EDEAF6]"
+        }`}
+      >
+        <div className={`flex items-center gap-2 pb-3 border-b ${isLight ? "border-slate-200" : "border-[#3A4178]"}`}>
           <ShieldCheck className="w-5 h-5 text-[#FFC66B]" />
           <div>
-            <h2 className="font-display text-base font-semibold text-[#EDEAF6]">
+            <h2 className="font-display text-base font-semibold">
               Caregiver Load Sharing Consent
             </h2>
-            <p className="text-[11px] text-[#9AA3D6]">
+            <p className={`text-[11px] ${isLight ? "text-slate-600" : "text-[#9AA3D6]"}`}>
               Exact pillar heights and burden percentages are hidden until all three caregivers mutually consent.
             </p>
           </div>
@@ -88,22 +96,28 @@ export function PrivacyView() {
                 key={c.id}
                 className={`p-3.5 rounded-xl border flex items-center justify-between transition-colors ${
                   isSelf
-                    ? "bg-[#14182B] border-[#FFC66B]"
+                    ? isLight
+                      ? "bg-amber-50/70 border-amber-300"
+                      : "bg-[#14182B] border-[#FFC66B]"
+                    : isLight
+                    ? "bg-slate-50 border-slate-200"
                     : "bg-[#14182B]/60 border-[#3A4178]"
                 }`}
               >
                 <div>
                   <div className="flex items-center gap-2">
-                    <span className="font-medium text-sm text-[#EDEAF6] capitalize">
+                    <span className="font-medium text-sm capitalize">
                       {c.name}
                     </span>
                     {isSelf && (
-                      <span className="px-1.5 py-0.2 rounded bg-[#FFC66B]/20 text-[#FFC66B] font-mono text-[10px]">
+                      <span className={`px-1.5 py-0.2 rounded font-mono text-[10px] ${
+                        isLight ? "bg-amber-200 text-amber-900" : "bg-[#FFC66B]/20 text-[#FFC66B]"
+                      }`}>
                         YOU
                       </span>
                     )}
                   </div>
-                  <span className="text-[11px] text-[#9AA3D6]">
+                  <span className={`text-[11px] ${isLight ? "text-slate-600" : "text-[#9AA3D6]"}`}>
                     {c.consentShare
                       ? "Consents to share load entries with family"
                       : "Load entries kept private"}
@@ -114,7 +128,11 @@ export function PrivacyView() {
                   onClick={() => handleToggleConsent(c.id, c.consentShare)}
                   disabled={toggling || !isSelf}
                   className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
-                    c.consentShare ? "bg-[#5FD3A0]" : "bg-[#3A4178]"
+                    c.consentShare
+                      ? "bg-[#10B981]"
+                      : isLight
+                      ? "bg-slate-300"
+                      : "bg-[#3A4178]"
                   } ${!isSelf ? "opacity-50 cursor-not-allowed" : ""}`}
                   title={
                     isSelf
@@ -135,31 +153,43 @@ export function PrivacyView() {
       </div>
 
       {/* Doorstep & Moment Privacy Policies */}
-      <div className="bg-[#262B52]/90 backdrop-blur border border-[#3A4178] rounded-2xl p-5 shadow-xl space-y-3">
-        <h3 className="font-display font-semibold text-sm text-[#EDEAF6] flex items-center gap-2">
-          <Lock className="w-4 h-4 text-[#9AA3D6]" />
+      <div
+        className={`rounded-2xl p-5 shadow-xl space-y-3 border transition-colors ${
+          isLight
+            ? "bg-white/98 backdrop-blur border-slate-200 text-slate-900"
+            : "bg-[#262B52]/90 backdrop-blur border-[#3A4178] text-[#EDEAF6]"
+        }`}
+      >
+        <h3 className="font-display font-semibold text-sm flex items-center gap-2">
+          <Lock className={`w-4 h-4 ${isLight ? "text-slate-600" : "text-[#9AA3D6]"}`} />
           Privacy & Visibility Rules
         </h3>
 
-        <div className="space-y-2 text-[11px] text-[#9AA3D6] leading-relaxed">
-          <p className="bg-[#14182B]/60 p-3 rounded-xl border border-[#3A4178]/60">
-            <strong className="text-[#EDEAF6] block mb-0.5">Doorstep Events:</strong>
+        <div className={`space-y-2 text-[11px] leading-relaxed ${isLight ? "text-slate-600" : "text-[#9AA3D6]"}`}>
+          <p className={`p-3 rounded-xl border ${isLight ? "bg-slate-50 border-slate-200" : "bg-[#14182B]/60 border-[#3A4178]/60"}`}>
+            <strong className={`block mb-0.5 ${isLight ? "text-slate-900" : "text-[#EDEAF6]"}`}>Doorstep Events:</strong>
             Doorstep camera and bell events are automatically classified and shared with all three caregivers. To protect family privacy, unacknowledged doorstep events expire after 48 hours.
           </p>
-          <p className="bg-[#14182B]/60 p-3 rounded-xl border border-[#3A4178]/60">
-            <strong className="text-[#EDEAF6] block mb-0.5">Sensitive Moments:</strong>
+          <p className={`p-3 rounded-xl border ${isLight ? "bg-slate-50 border-slate-200" : "bg-[#14182B]/60 border-[#3A4178]/60"}`}>
+            <strong className={`block mb-0.5 ${isLight ? "text-slate-900" : "text-[#EDEAF6]"}`}>Sensitive Moments:</strong>
             Spoken notes containing private health or relationship observations are tagged as sensitive and remain strictly private unless you explicitly confirm a shared handoff.
           </p>
         </div>
       </div>
 
       {/* Visible Moments List for Current Viewer */}
-      <div className="bg-[#262B52]/90 backdrop-blur border border-[#3A4178] rounded-2xl p-5 shadow-xl space-y-3">
-        <div className="flex items-center justify-between pb-2 border-b border-[#3A4178]">
-          <h3 className="font-display font-semibold text-sm text-[#EDEAF6]">
+      <div
+        className={`rounded-2xl p-5 shadow-xl space-y-3 border transition-colors ${
+          isLight
+            ? "bg-white/98 backdrop-blur border-slate-200 text-slate-900"
+            : "bg-[#262B52]/90 backdrop-blur border-[#3A4178] text-[#EDEAF6]"
+        }`}
+      >
+        <div className={`flex items-center justify-between pb-2 border-b ${isLight ? "border-slate-200" : "border-[#3A4178]"}`}>
+          <h3 className="font-display font-semibold text-sm">
             Moments Visible to You ({moments.length})
           </h3>
-          <span className="text-[10px] text-[#9AA3D6] font-mono">
+          <span className={`text-[10px] font-mono ${isLight ? "text-slate-500" : "text-[#9AA3D6]"}`}>
             Filtered by server-side policy
           </span>
         </div>
@@ -168,25 +198,27 @@ export function PrivacyView() {
           {moments.map((m) => (
             <div
               key={m.id}
-              className="p-2.5 rounded-lg bg-[#14182B]/60 border border-[#3A4178] flex items-start justify-between gap-2"
+              className={`p-2.5 rounded-lg border flex items-start justify-between gap-2 ${
+                isLight ? "bg-slate-50 border-slate-200" : "bg-[#14182B]/60 border-[#3A4178]"
+              }`}
             >
               <div className="space-y-1 min-w-0">
-                <p className="text-xs text-[#EDEAF6] font-medium truncate">
+                <p className={`text-xs font-medium truncate ${isLight ? "text-slate-900" : "text-[#EDEAF6]"}`}>
                   {m.classification?.summary || m.text}
                 </p>
-                <div className="flex items-center gap-2 text-[10px] text-[#9AA3D6]">
+                <div className={`flex items-center gap-2 text-[10px] ${isLight ? "text-slate-500" : "text-[#9AA3D6]"}`}>
                   <span>Source: {m.source}</span>
                   <span>•</span>
                   <span>Kind: {m.classification?.kind}</span>
                 </div>
               </div>
               <span
-                className={`px-2 py-0.5 rounded text-[10px] font-mono shrink-0 uppercase ${
+                className={`px-2 py-0.5 rounded text-[10px] font-mono shrink-0 uppercase font-medium ${
                   m.privacy === "household"
-                    ? "bg-[#5B9CFF]/20 text-[#5B9CFF]"
+                    ? isLight ? "bg-blue-100 text-blue-700" : "bg-[#5B9CFF]/20 text-[#5B9CFF]"
                     : m.privacy === "shared"
-                    ? "bg-[#5FD3A0]/20 text-[#5FD3A0]"
-                    : "bg-[#FFB547]/20 text-[#FFB547]"
+                    ? isLight ? "bg-emerald-100 text-emerald-700" : "bg-[#5FD3A0]/20 text-[#5FD3A0]"
+                    : isLight ? "bg-amber-100 text-amber-800" : "bg-[#FFB547]/20 text-[#FFB547]"
                 }`}
               >
                 {m.privacy}

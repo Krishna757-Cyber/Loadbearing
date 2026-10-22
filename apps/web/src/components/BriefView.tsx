@@ -15,9 +15,11 @@ interface RebalanceProposalData {
 export function BriefView() {
   const viewerId = useAppStore((s) => s.viewerId);
   const language = useAppStore((s) => s.language);
+  const themeMode = useAppStore((s) => s.themeMode);
   const household = useAppStore((s) => s.household);
   const addToast = useAppStore((s) => s.addToast);
 
+  const isLight = themeMode === "light";
   const [briefText, setBriefText] = useState<string | null>(null);
   const [stats, setStats] = useState<{ resolved: number; open: number; memories_shared: number; unowned: number } | null>(null);
   const [aiSource, setAiSource] = useState<"bedrock" | "rules" | null>(null);
@@ -159,11 +161,21 @@ export function BriefView() {
   return (
     <div className="relative z-10 max-w-2xl mx-auto p-6 flex flex-col gap-6 text-xs select-none">
       {/* Brief Card */}
-      <div className="bg-[#262B52]/90 backdrop-blur border border-[#3A4178] rounded-2xl p-6 shadow-2xl space-y-4">
-        <div className="flex items-center justify-between pb-3 border-b border-[#3A4178]">
+      <div
+        className={`rounded-2xl p-6 shadow-2xl space-y-4 border transition-colors ${
+          isLight
+            ? "bg-white/98 backdrop-blur border-slate-200 text-slate-900"
+            : "bg-[#262B52]/90 backdrop-blur border-[#3A4178] text-[#EDEAF6]"
+        }`}
+      >
+        <div
+          className={`flex items-center justify-between pb-3 border-b ${
+            isLight ? "border-slate-200" : "border-[#3A4178]"
+          }`}
+        >
           <div className="flex items-center gap-2">
             <Heart className="w-4 h-4 text-[#FF7A7A]" />
-            <h2 className="font-display text-base font-semibold text-[#EDEAF6]">
+            <h2 className="font-display text-base font-semibold">
               {language === "hi" ? "दैनिक निरंतरता पत्र" : "Family Continuity Brief"}
             </h2>
           </div>
@@ -171,7 +183,11 @@ export function BriefView() {
             {briefText && (
               <button
                 onClick={speakBrief}
-                className="flex items-center gap-1.5 px-3 py-1 rounded-lg bg-[#14182B] border border-[#3A4178] hover:border-[#FFC66B] text-[#FFC66B] font-medium transition-colors"
+                className={`flex items-center gap-1.5 px-3 py-1 rounded-lg border font-medium transition-colors ${
+                  isLight
+                    ? "bg-amber-50 border-amber-200 text-amber-900 hover:bg-amber-100"
+                    : "bg-[#14182B] border-[#3A4178] hover:border-[#FFC66B] text-[#FFC66B]"
+                }`}
                 title="Read brief aloud"
               >
                 <Volume2 className="w-3.5 h-3.5" />
@@ -181,7 +197,11 @@ export function BriefView() {
             <button
               onClick={fetchBrief}
               disabled={loading}
-              className="p-1.5 rounded-lg bg-[#14182B] border border-[#3A4178] text-[#9AA3D6] hover:text-[#EDEAF6]"
+              className={`p-1.5 rounded-lg border transition-colors ${
+                isLight
+                  ? "bg-slate-50 border-slate-200 text-slate-600 hover:text-slate-900"
+                  : "bg-[#14182B] border-[#3A4178] text-[#9AA3D6] hover:text-[#EDEAF6]"
+              }`}
               title="Refresh brief"
             >
               <RefreshCw className={`w-3.5 h-3.5 ${loading ? "animate-spin" : ""}`} />
@@ -192,47 +212,79 @@ export function BriefView() {
         {/* Stats Grid */}
         {stats && (
           <div className="grid grid-cols-4 gap-2 text-center">
-            <div className="bg-[#14182B]/60 p-2.5 rounded-xl border border-[#3A4178]/60">
-              <span className="block font-mono text-base font-bold text-[#5FD3A0]">
+            <div
+              className={`p-2.5 rounded-xl border ${
+                isLight ? "bg-slate-50 border-slate-200" : "bg-[#14182B]/60 border-[#3A4178]/60"
+              }`}
+            >
+              <span className="block font-mono text-base font-bold text-[#10B981]">
                 {stats.resolved}
               </span>
-              <span className="text-[10px] text-[#9AA3D6] uppercase tracking-wider">Resolved</span>
+              <span className={`text-[10px] uppercase tracking-wider ${isLight ? "text-slate-500" : "text-[#9AA3D6]"}`}>
+                Resolved
+              </span>
             </div>
-            <div className="bg-[#14182B]/60 p-2.5 rounded-xl border border-[#3A4178]/60">
-              <span className="block font-mono text-base font-bold text-[#5B9CFF]">
+            <div
+              className={`p-2.5 rounded-xl border ${
+                isLight ? "bg-slate-50 border-slate-200" : "bg-[#14182B]/60 border-[#3A4178]/60"
+              }`}
+            >
+              <span className="block font-mono text-base font-bold text-[#2563EB]">
                 {stats.open}
               </span>
-              <span className="text-[10px] text-[#9AA3D6] uppercase tracking-wider">Open</span>
+              <span className={`text-[10px] uppercase tracking-wider ${isLight ? "text-slate-500" : "text-[#9AA3D6]"}`}>
+                Open
+              </span>
             </div>
-            <div className="bg-[#14182B]/60 p-2.5 rounded-xl border border-[#3A4178]/60">
-              <span className="block font-mono text-base font-bold text-[#B08CFF]">
+            <div
+              className={`p-2.5 rounded-xl border ${
+                isLight ? "bg-slate-50 border-slate-200" : "bg-[#14182B]/60 border-[#3A4178]/60"
+              }`}
+            >
+              <span className="block font-mono text-base font-bold text-[#8B5CF6]">
                 {stats.memories_shared}
               </span>
-              <span className="text-[10px] text-[#9AA3D6] uppercase tracking-wider">Memories</span>
+              <span className={`text-[10px] uppercase tracking-wider ${isLight ? "text-slate-500" : "text-[#9AA3D6]"}`}>
+                Memories
+              </span>
             </div>
-            <div className="bg-[#14182B]/60 p-2.5 rounded-xl border border-[#3A4178]/60">
-              <span className="block font-mono text-base font-bold text-[#FFC66B]">
+            <div
+              className={`p-2.5 rounded-xl border ${
+                isLight ? "bg-slate-50 border-slate-200" : "bg-[#14182B]/60 border-[#3A4178]/60"
+              }`}
+            >
+              <span className="block font-mono text-base font-bold text-[#D97706]">
                 {stats.unowned}
               </span>
-              <span className="text-[10px] text-[#9AA3D6] uppercase tracking-wider">Unowned</span>
+              <span className={`text-[10px] uppercase tracking-wider ${isLight ? "text-slate-500" : "text-[#9AA3D6]"}`}>
+                Unowned
+              </span>
             </div>
           </div>
         )}
 
         {/* Letter body */}
-        <div className="bg-[#14182B]/80 p-4 rounded-xl border-l-2 border-[#FFC66B] text-[#EDEAF6] leading-relaxed text-sm">
+        <div
+          className={`p-4 rounded-xl border-l-2 leading-relaxed text-sm ${
+            isLight
+              ? "bg-slate-50 border-amber-500 text-slate-800"
+              : "bg-[#14182B]/80 border-[#FFC66B] text-[#EDEAF6]"
+          }`}
+        >
           {loading ? (
-            <p className="text-[#9AA3D6] animate-pulse">Composing today&apos;s warm family letter...</p>
+            <p className={`animate-pulse ${isLight ? "text-slate-500" : "text-[#9AA3D6]"}`}>
+              Composing today&apos;s warm family letter...
+            </p>
           ) : (
-            briefText || <p className="text-[#9AA3D6]">No recent activity to summarize for your view.</p>
+            briefText || <p className={isLight ? "text-slate-500" : "text-[#9AA3D6]"}>No recent activity to summarize for your view.</p>
           )}
         </div>
 
         {aiSource && (
-          <div className="text-[10px] text-[#9AA3D6] font-mono flex items-center justify-between">
+          <div className={`text-[10px] font-mono flex items-center justify-between ${isLight ? "text-slate-500" : "text-[#9AA3D6]"}`}>
             <span>Grounding: Visible moments & audited tasks only</span>
             <span>
-              Engine: <strong className="text-[#FFC66B] uppercase">{aiSource}</strong>
+              Engine: <strong className={isLight ? "text-amber-700 uppercase" : "text-[#FFC66B] uppercase"}>{aiSource}</strong>
             </span>
           </div>
         )}
@@ -241,13 +293,17 @@ export function BriefView() {
       {/* Share a Family Memory Input */}
       <form
         onSubmit={handleShareMemory}
-        className="bg-[#262B52]/90 backdrop-blur border border-[#3A4178] rounded-2xl p-4 shadow-xl space-y-2"
+        className={`rounded-2xl p-4 shadow-xl space-y-2 border transition-colors ${
+          isLight
+            ? "bg-white/98 backdrop-blur border-slate-200 text-slate-900"
+            : "bg-[#262B52]/90 backdrop-blur border-[#3A4178] text-[#EDEAF6]"
+        }`}
       >
-        <div className="flex items-center gap-1.5 text-xs font-semibold text-[#B08CFF]">
+        <div className="flex items-center gap-1.5 text-xs font-semibold text-[#8B5CF6]">
           <span>★</span>
           <span>Share a Family Memory or Story</span>
         </div>
-        <p className="text-[11px] text-[#9AA3D6]">
+        <p className={`text-[11px] ${isLight ? "text-slate-600" : "text-[#9AA3D6]"}`}>
           Treasured memories (like Dadi&apos;s recipes or childhood stories) are shared with everyone as purple star tokens.
         </p>
         <div className="flex items-center gap-2">
@@ -256,7 +312,11 @@ export function BriefView() {
             value={memoryInput}
             onChange={(e) => setMemoryInput(e.target.value)}
             placeholder="e.g. Aaj Dadi ne apni purani kheer ki recipe sunayi..."
-            className="flex-1 bg-[#14182B] border border-[#3A4178] rounded-xl px-3 py-2 text-xs text-[#EDEAF6] placeholder-[#9AA3D6]/50 outline-none focus:border-[#B08CFF]"
+            className={`flex-1 rounded-xl px-3 py-2 text-xs outline-none border transition-colors ${
+              isLight
+                ? "bg-slate-50 border-slate-300 text-slate-900 placeholder:text-slate-400 focus:border-purple-500 focus:bg-white"
+                : "bg-[#14182B] border-[#3A4178] text-[#EDEAF6] placeholder-[#9AA3D6]/50 focus:border-[#B08CFF]"
+            }`}
           />
           <button
             type="submit"
@@ -270,13 +330,19 @@ export function BriefView() {
       </form>
 
       {/* Rebalance Care Work Section */}
-      <div className="bg-[#262B52]/90 backdrop-blur border border-[#3A4178] rounded-2xl p-5 shadow-xl space-y-3">
+      <div
+        className={`rounded-2xl p-5 shadow-xl space-y-3 border transition-colors ${
+          isLight
+            ? "bg-white/98 backdrop-blur border-slate-200 text-slate-900"
+            : "bg-[#262B52]/90 backdrop-blur border-[#3A4178] text-[#EDEAF6]"
+        }`}
+      >
         <div className="flex items-center justify-between">
           <div>
-            <h3 className="font-display font-semibold text-sm text-[#EDEAF6]">
+            <h3 className="font-display font-semibold text-sm">
               Caregiver Load Balance
             </h3>
-            <p className="text-[11px] text-[#9AA3D6]">
+            <p className={`text-[11px] ${isLight ? "text-slate-600" : "text-[#9AA3D6]"}`}>
               Detect invisible planning burden and suggest routing preferences to restore fairness.
             </p>
           </div>
@@ -290,9 +356,15 @@ export function BriefView() {
         </div>
 
         {proposal && (
-          <div className="bg-[#14182B]/90 p-4 rounded-xl border border-[#3A4178] space-y-3">
+          <div
+            className={`p-4 rounded-xl border space-y-3 ${
+              isLight
+                ? "bg-slate-50 border-slate-200"
+                : "bg-[#14182B]/90 border-[#3A4178]"
+            }`}
+          >
             {proposal.visibility === "private_only" ? (
-              <div className="flex items-start gap-2 text-[#FFB547]">
+              <div className="flex items-start gap-2 text-amber-600">
                 <ShieldAlert className="w-4 h-4 shrink-0 mt-0.5" />
                 <p className="text-xs">
                   Rebalance proposals require mutual consent from all caregivers. Currently{" "}
@@ -301,14 +373,16 @@ export function BriefView() {
               </div>
             ) : (
               <>
-                <p className="text-xs text-[#EDEAF6] italic">&ldquo;{proposal.rationale}&rdquo;</p>
+                <p className={`text-xs italic ${isLight ? "text-slate-800" : "text-[#EDEAF6]"}`}>
+                  &ldquo;{proposal.rationale}&rdquo;
+                </p>
                 {proposal.moves && proposal.moves.length > 0 && (
-                  <div className="text-xs text-[#FFC66B]">
+                  <div className={`text-xs ${isLight ? "text-amber-800 font-medium" : "text-[#FFC66B]"}`}>
                     Suggested move: Route next {proposal.moves[0].count} {proposal.moves[0].kind} tasks to{" "}
                     <strong className="capitalize">{proposal.moves[0].toMemberId}</strong>.
                   </div>
                 )}
-                <div className="flex justify-end pt-2 border-t border-[#3A4178]">
+                <div className={`flex justify-end pt-2 border-t ${isLight ? "border-slate-200" : "border-[#3A4178]"}`}>
                   <button
                     onClick={handleApproveProposal}
                     className="px-4 py-1.5 rounded-lg bg-[#5FD3A0] hover:bg-[#7AE0B2] text-[#14182B] font-semibold text-xs"

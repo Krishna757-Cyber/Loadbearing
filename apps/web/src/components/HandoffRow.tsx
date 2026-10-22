@@ -2,7 +2,7 @@
 
 import React from "react";
 import { CheckCircle2 } from "lucide-react";
-import type { HandoffState, MemberState, MomentState } from "@/store";
+import { useAppStore, type HandoffState, type MemberState, type MomentState } from "@/store";
 import { DateTime } from "luxon";
 
 interface HandoffRowProps {
@@ -24,6 +24,8 @@ export function HandoffRow({
   onSelect,
   onAction,
 }: HandoffRowProps) {
+  const themeMode = useAppStore((s) => s.themeMode);
+  const isLight = themeMode === "light";
   const isAssignee = handoff.assigneeId === viewerId;
 
   // Local time for assignee
@@ -84,19 +86,31 @@ export function HandoffRow({
   return (
     <div
       onClick={() => onSelect(handoff)}
-      className="p-3 bg-[#262B52]/60 hover:bg-[#262B52] border border-[#3A4178] rounded-lg transition-all cursor-pointer flex flex-col gap-2"
+      className={`p-3 rounded-xl transition-all cursor-pointer flex flex-col gap-2 border shadow-sm ${
+        isLight
+          ? "bg-slate-50 hover:bg-slate-100/90 border-slate-200 text-slate-900"
+          : "bg-[#262B52]/60 hover:bg-[#262B52] border-[#3A4178] text-[#EDEAF6]"
+      }`}
     >
       <div className="flex items-start justify-between gap-2">
         <div className="flex items-start gap-2 min-w-0">
           <div className="mt-0.5 shrink-0">{getBadge()}</div>
           <div className="min-w-0">
-            <p className="text-xs font-medium text-[#EDEAF6] leading-snug line-clamp-2">
+            <p
+              className={`text-xs font-semibold leading-snug line-clamp-2 ${
+                isLight ? "text-slate-900" : "text-[#EDEAF6]"
+              }`}
+            >
               {title}
             </p>
-            <div className="flex items-center gap-2 mt-1 text-[11px] text-[#9AA3D6]">
+            <div
+              className={`flex items-center gap-2 mt-1 text-[11px] ${
+                isLight ? "text-slate-600" : "text-[#9AA3D6]"
+              }`}
+            >
               {assignee ? (
                 <span>
-                  To <strong className="text-[#EDEAF6] capitalize">{assignee.name}</strong>{" "}
+                  To <strong className={isLight ? "text-slate-900 capitalize" : "text-[#EDEAF6] capitalize"}>{assignee.name}</strong>{" "}
                   {assigneeLocalTime && (
                     <span className="font-mono text-[10px]">({assigneeLocalTime})</span>
                   )}
@@ -120,7 +134,11 @@ export function HandoffRow({
               </button>
               <button
                 onClick={() => onAction(handoff.id, "declined")}
-                className="px-1.5 py-1 rounded bg-[#14182B] border border-[#3A4178] hover:border-[#FF7A7A] text-[#9AA3D6] hover:text-[#FF7A7A] text-xs transition-colors"
+                className={`px-1.5 py-1 rounded text-xs transition-colors border ${
+                  isLight
+                    ? "bg-white border-slate-300 text-slate-600 hover:text-red-600 hover:border-red-400"
+                    : "bg-[#14182B] border-[#3A4178] text-[#9AA3D6] hover:text-[#FF7A7A]"
+                }`}
                 title="Decline and reroute"
               >
                 Decline
@@ -138,19 +156,19 @@ export function HandoffRow({
           )}
 
           {handoff.status === "resolved" && (
-            <span className="text-[11px] font-mono text-[#5FD3A0] flex items-center gap-1">
+            <span className="text-[11px] font-mono text-[#10B981] font-medium flex items-center gap-1">
               <CheckCircle2 className="w-3 h-3" /> Resolved
             </span>
           )}
 
           {handoff.status === "awaiting_acceptance" && !isAssignee && (
-            <span className="text-[11px] font-mono text-[#FFB547]">
+            <span className="text-[11px] font-mono text-[#D97706] font-medium">
               Waiting
             </span>
           )}
 
           {handoff.status === "accepted" && !isAssignee && (
-            <span className="text-[11px] font-mono text-[#5B9CFF]">
+            <span className="text-[11px] font-mono text-[#2563EB] font-medium">
               In progress
             </span>
           )}
@@ -159,7 +177,13 @@ export function HandoffRow({
 
       {/* Explanation snippet if available */}
       {handoff.explanation?.text && (
-        <div className="text-[11px] text-[#9AA3D6] italic bg-[#14182B]/40 px-2 py-1 rounded border-l-2 border-[#FFC66B]/50 line-clamp-1">
+        <div
+          className={`text-[11px] italic px-2.5 py-1.5 rounded-lg border-l-2 line-clamp-1 ${
+            isLight
+              ? "bg-slate-100 border-amber-500 text-slate-700"
+              : "bg-[#14182B]/40 border-[#FFC66B]/50 text-[#9AA3D6]"
+          }`}
+        >
           &ldquo;{handoff.explanation.text}&rdquo;
         </div>
       )}

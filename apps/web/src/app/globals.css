@@ -57,33 +57,72 @@ html.light {
   --text-moon: #475569;
   --accent-lantern: #D97706;
   --accent-lantern-dark: #FFFFFF;
+  color-scheme: light;
 }
 
-html.light header,
-html.light aside,
-html.light .bg-\[\#14182B\],
-html.light .bg-\[\#14182B\]\/90,
-html.light .bg-\[\#14182B\]\/85,
-html.light .bg-\[\#14182B\]\/95 {
-  background-color: #FFFFFF !important;
-}
-
-html.light .bg-\[\#262B52\],
-html.light .bg-\[\#262B52\]\/95,
-html.light .bg-\[\#262B52\]\/90 {
-  background-color: #F1F5F9 !important;
-}
-
-html.light .text-\[\#EDEAF6\] {
+html.light body {
+  background-color: #F8FAFC !important;
   color: #0F172A !important;
 }
 
-html.light .text-\[\#9AA3D6\] {
+/* Light mode panels & main headers/drawers */
+html.light header,
+html.light aside,
+html.light [class*="bg-[#262B52]" i] {
+  background-color: #FFFFFF !important;
+  border-color: #E2E8F0 !important;
+}
+
+/* Sub-panels, cards, and buttons inside asides and page */
+html.light [class*="bg-[#14182B]" i] {
+  background-color: #F1F5F9 !important;
+  border-color: #CBD5E1 !important;
+}
+
+html.light aside [class*="bg-[#14182B]" i],
+html.light aside button[class*="bg-[#14182B]" i] {
+  background-color: #F1F5F9 !important;
+  border-color: #CBD5E1 !important;
+}
+
+html.light aside button[class*="bg-[#14182B]" i]:hover {
+  background-color: #E2E8F0 !important;
+}
+
+/* Text in Light Mode - high contrast dark slate */
+html.light [class*="text-[#EDEAF6]" i] {
+  color: #0F172A !important;
+}
+
+html.light [class*="text-[#9AA3D6]" i] {
   color: #475569 !important;
 }
 
-html.light .border-\[\#3A4178\] {
+/* Border overrides in Light Mode */
+html.light [class*="border-[#3A4178]" i] {
+  border-color: #E2E8F0 !important;
+}
+
+/* Keep accent buttons legible */
+html.light [class*="bg-[#FFC66B]" i] {
+  background-color: #FFC66B !important;
+}
+html.light [class*="bg-[#FFC66B]" i] [class*="text-[#14182B]" i],
+html.light [class*="bg-[#FFC66B]" i].text-\[\#14182B\] {
+  color: #14182B !important;
+}
+
+/* Form inputs in Light Mode */
+html.light input,
+html.light textarea {
+  background-color: #FFFFFF !important;
+  color: #0F172A !important;
   border-color: #CBD5E1 !important;
+}
+
+html.light input::placeholder,
+html.light textarea::placeholder {
+  color: #94A3B8 !important;
 }
 
 /* Custom Cyberpunk */
@@ -99,24 +138,23 @@ html.custom-cyberpunk {
 
 html.custom-cyberpunk header,
 html.custom-cyberpunk aside,
-html.custom-cyberpunk .bg-\[\#14182B\],
-html.custom-cyberpunk .bg-\[\#14182B\]\/90,
-html.custom-cyberpunk .bg-\[\#14182B\]\/85,
-html.custom-cyberpunk .bg-\[\#14182B\]\/95 {
+html.custom-cyberpunk [class*="bg-[#14182B]"],
+html.custom-cyberpunk [class*="bg-[#14182b]"] {
   background-color: #130722 !important;
 }
 
-html.custom-cyberpunk .bg-\[\#262B52\],
-html.custom-cyberpunk .bg-\[\#262B52\]\/95,
-html.custom-cyberpunk .bg-\[\#262B52\]\/90 {
+html.custom-cyberpunk [class*="bg-[#262B52]"],
+html.custom-cyberpunk [class*="bg-[#262b52]"] {
   background-color: #240E42 !important;
 }
 
-html.custom-cyberpunk .border-\[\#3A4178\] {
+html.custom-cyberpunk [class*="border-[#3A4178]"],
+html.custom-cyberpunk [class*="border-[#3a4178]"] {
   border-color: #5B21B6 !important;
 }
 
-html.custom-cyberpunk .text-\[\#9AA3D6\] {
+html.custom-cyberpunk [class*="text-[#9AA3D6]"],
+html.custom-cyberpunk [class*="text-[#9aa3d6]"] {
   color: #C084FC !important;
 }
 
@@ -133,24 +171,23 @@ html.custom-emerald {
 
 html.custom-emerald header,
 html.custom-emerald aside,
-html.custom-emerald .bg-\[\#14182B\],
-html.custom-emerald .bg-\[\#14182B\]\/90,
-html.custom-emerald .bg-\[\#14182B\]\/85,
-html.custom-emerald .bg-\[\#14182B\]\/95 {
+html.custom-emerald [class*="bg-[#14182B]"],
+html.custom-emerald [class*="bg-[#14182b]"] {
   background-color: #062419 !important;
 }
 
-html.custom-emerald .bg-\[\#262B52\],
-html.custom-emerald .bg-\[\#262B52\]\/95,
-html.custom-emerald .bg-\[\#262B52\]\/90 {
+html.custom-emerald [class*="bg-[#262B52]"],
+html.custom-emerald [class*="bg-[#262b52]"] {
   background-color: #0D3E2E !important;
 }
 
-html.custom-emerald .border-\[\#3A4178\] {
+html.custom-emerald [class*="border-[#3A4178]"],
+html.custom-emerald [class*="border-[#3a4178]"] {
   border-color: #15803D !important;
 }
 
-html.custom-emerald .text-\[\#9AA3D6\] {
+html.custom-emerald [class*="text-[#9AA3D6]"],
+html.custom-emerald [class*="text-[#9aa3d6]"] {
   color: #86EFAC !important;
 }
 
@@ -167,24 +204,23 @@ html.custom-rose {
 
 html.custom-rose header,
 html.custom-rose aside,
-html.custom-rose .bg-\[\#14182B\],
-html.custom-rose .bg-\[\#14182B\]\/90,
-html.custom-rose .bg-\[\#14182B\]\/85,
-html.custom-rose .bg-\[\#14182B\]\/95 {
+html.custom-rose [class*="bg-[#14182B]"],
+html.custom-rose [class*="bg-[#14182b]"] {
   background-color: #250C15 !important;
 }
 
-html.custom-rose .bg-\[\#262B52\],
-html.custom-rose .bg-\[\#262B52\]\/95,
-html.custom-rose .bg-\[\#262B52\]\/90 {
+html.custom-rose [class*="bg-[#262B52]"],
+html.custom-rose [class*="bg-[#262b52]"] {
   background-color: #3D1424 !important;
 }
 
-html.custom-rose .border-\[\#3A4178\] {
+html.custom-rose [class*="border-[#3A4178]"],
+html.custom-rose [class*="border-[#3a4178]"] {
   border-color: #BE185D !important;
 }
 
-html.custom-rose .text-\[\#9AA3D6\] {
+html.custom-rose [class*="text-[#9AA3D6]"],
+html.custom-rose [class*="text-[#9aa3d6]"] {
   color: #FDA4AF !important;
 }
 
