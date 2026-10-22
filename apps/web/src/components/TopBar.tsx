@@ -46,13 +46,20 @@ export function TopBar() {
     <header className="relative z-20 flex items-center justify-between h-14 px-4 bg-[#14182B]/90 backdrop-blur border-b border-[#3A4178] select-none">
       {/* Left: Brand wordmark & view navigation */}
       <div className="flex items-center gap-4">
-        <div className="flex items-baseline gap-2">
-          <span className="font-display text-lg font-bold tracking-tight text-[#FFC66B]">
-            LoadBearing
-          </span>
-          <span className="text-[11px] text-[#9AA3D6] hidden sm:inline">
-            Care shared fairly
-          </span>
+        <div className="flex items-center gap-2.5">
+          <img
+            src="/logo.png"
+            alt="LoadBearing Logo"
+            className="w-8 h-8 rounded-full border border-[#FFC66B]/60 shadow-[0_0_12px_rgba(255,198,107,0.35)] object-cover"
+          />
+          <div className="flex items-baseline gap-2">
+            <span className="font-display text-lg font-bold tracking-tight text-[#FFC66B]">
+              LoadBearing
+            </span>
+            <span className="text-[11px] text-[#9AA3D6] hidden sm:inline">
+              Care shared fairly
+            </span>
+          </div>
         </div>
 
         {/* View switcher tabs */}

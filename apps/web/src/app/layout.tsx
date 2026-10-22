@@ -19,6 +19,10 @@ const atkinson = Atkinson_Hyperlegible({
 export const metadata: Metadata = {
   title: "LoadBearing — Care shared fairly",
   description: "Care shared fairly. Nothing falls between people. A simulated Alexa+ surface with Follow-the-Sun routing and 3D Twilight Globe.",
+  icons: {
+    icon: "/logo.png",
+    apple: "/logo.png",
+  },
 };
 
 export default function RootLayout({
