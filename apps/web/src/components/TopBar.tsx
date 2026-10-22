@@ -78,15 +78,15 @@ export function TopBar() {
               <span className="h-[2px] w-6 rounded-r-full bg-[#5B9CFF] shadow-[0_0_4px_#5B9CFF]" />
             </div>
 
-            {/* Tagline */}
-            <span className="text-[10px] text-[#EDEAF6]/90 font-medium tracking-normal whitespace-nowrap hidden sm:inline">
+            {/* Tagline - only on very wide screens to prevent navbar squeeze */}
+            <span className="text-[10px] text-[#EDEAF6]/90 font-medium tracking-normal whitespace-nowrap hidden 2xl:inline">
               {t("brandTagline", language)}
             </span>
           </div>
         </div>
 
         {/* View switcher tabs */}
-        <nav className="flex items-center gap-1 bg-[#262B52] border border-[#3A4178] p-0.5 rounded-lg text-xs">
+        <nav className="flex items-center gap-1 bg-[#262B52] border border-[#3A4178] p-0.5 rounded-lg text-xs shrink-0">
           {(
             [
               { id: "map", label: t("globe", language) },
@@ -98,7 +98,7 @@ export function TopBar() {
             <button
               key={tab.id}
               onClick={() => setActiveView(tab.id)}
-              className={`px-2.5 py-1 rounded-md transition-colors ${
+              className={`px-2.5 py-1 rounded-md transition-colors whitespace-nowrap ${
                 activeView === tab.id
                   ? "bg-[#FFC66B] text-[#14182B] font-semibold"
                   : "text-[#9AA3D6] hover:text-[#EDEAF6]"
@@ -111,24 +111,24 @@ export function TopBar() {
       </div>
 
       {/* Centre: Clock Scrubber */}
-      <div className="hidden md:flex items-center justify-center">
+      <div className="hidden lg:flex items-center justify-center shrink-0">
         <ClockScrubber />
       </div>
 
-      {/* Right: View as, Language, A11y, Privacy Chip */}
-      <div className="flex items-center gap-2">
+      {/* Right: View as, Language, Theme, A11y, Privacy Chip, Handoffs */}
+      <div className="flex items-center gap-2 shrink-0">
         {/* View As Dropdown */}
-        <div className="relative">
+        <div className="relative shrink-0">
           <button
             onClick={() => setViewMenuOpen(!viewMenuOpen)}
-            className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[#262B52] border border-[#3A4178] text-xs text-[#EDEAF6] hover:border-[#FFC66B] transition-colors"
+            className="flex items-center gap-1.5 h-8 px-2.5 rounded-lg bg-[#262B52] border border-[#3A4178] text-xs text-[#EDEAF6] hover:border-[#FFC66B] transition-colors whitespace-nowrap"
             title="Switch caregiver view"
           >
-            <Eye className="w-3.5 h-3.5 text-[#FFC66B]" />
-            <span>
-              View as: <strong className="capitalize">{currentMember?.name ?? viewerId}</strong>
+            <Eye className="w-3.5 h-3.5 text-[#FFC66B] shrink-0" />
+            <span className="capitalize font-medium">
+              {currentMember?.name ?? viewerId}
             </span>
-            <ChevronDown className="w-3 h-3 text-[#9AA3D6]" />
+            <ChevronDown className="w-3 h-3 text-[#9AA3D6] shrink-0" />
           </button>
 
           {viewMenuOpen && (
@@ -169,7 +169,7 @@ export function TopBar() {
         </div>
 
         {/* Language Dropdown (International) */}
-        <div className="relative">
+        <div className="relative shrink-0">
           <button
             onClick={() => {
               setLangMenuOpen(!langMenuOpen);
@@ -177,15 +177,15 @@ export function TopBar() {
               setViewMenuOpen(false);
               setA11yMenuOpen(false);
             }}
-            className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[#262B52] border border-[#3A4178] text-xs text-[#EDEAF6] hover:border-[#FFC66B] transition-colors"
+            className="flex items-center gap-1.5 h-8 px-2.5 rounded-lg bg-[#262B52] border border-[#3A4178] text-xs text-[#EDEAF6] hover:border-[#FFC66B] transition-colors whitespace-nowrap"
             title="Select Language / भाषा चुनें"
           >
-            <Languages className="w-3.5 h-3.5 text-[#FFC66B]" />
+            <Languages className="w-3.5 h-3.5 text-[#FFC66B] shrink-0" />
             <span className="font-medium">
               {LANGUAGES.find((l) => l.code === language)?.flag}{" "}
               {LANGUAGES.find((l) => l.code === language)?.nativeName}
             </span>
-            <ChevronDown className="w-3 h-3 text-[#9AA3D6]" />
+            <ChevronDown className="w-3 h-3 text-[#9AA3D6] shrink-0" />
           </button>
 
           {langMenuOpen && (
@@ -216,7 +216,7 @@ export function TopBar() {
         </div>
 
         {/* Theme Mode Selector (Dark, Light, Custom) */}
-        <div className="relative">
+        <div className="relative shrink-0">
           <button
             onClick={() => {
               setThemeMenuOpen(!themeMenuOpen);
@@ -224,20 +224,20 @@ export function TopBar() {
               setViewMenuOpen(false);
               setA11yMenuOpen(false);
             }}
-            className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[#262B52] border border-[#3A4178] text-xs text-[#EDEAF6] hover:border-[#FFC66B] transition-colors"
+            className="flex items-center gap-1.5 h-8 px-2.5 rounded-lg bg-[#262B52] border border-[#3A4178] text-xs text-[#EDEAF6] hover:border-[#FFC66B] transition-colors whitespace-nowrap"
             title="Theme Mode: Dark, Light, Custom"
           >
             {themeMode === "light" ? (
-              <Sun className="w-3.5 h-3.5 text-[#FFC66B]" />
+              <Sun className="w-3.5 h-3.5 text-[#FFC66B] shrink-0" />
             ) : themeMode === "dark" ? (
-              <Moon className="w-3.5 h-3.5 text-[#9AA3D6]" />
+              <Moon className="w-3.5 h-3.5 text-[#9AA3D6] shrink-0" />
             ) : (
-              <Palette className="w-3.5 h-3.5 text-[#FFC66B]" />
+              <Palette className="w-3.5 h-3.5 text-[#FFC66B] shrink-0" />
             )}
-            <span className="hidden sm:inline capitalize">
+            <span className="capitalize">
               {themeMode === "dark" ? t("dark", language) : themeMode === "light" ? t("light", language) : t("custom", language)}
             </span>
-            <ChevronDown className="w-3 h-3 text-[#9AA3D6]" />
+            <ChevronDown className="w-3 h-3 text-[#9AA3D6] shrink-0" />
           </button>
 
           {themeMenuOpen && (
@@ -329,10 +329,10 @@ export function TopBar() {
         </div>
 
         {/* Accessibility Menu */}
-        <div className="relative">
+        <div className="relative shrink-0">
           <button
             onClick={() => setA11yMenuOpen(!a11yMenuOpen)}
-            className="p-1.5 rounded-lg bg-[#262B52] border border-[#3A4178] text-[#9AA3D6] hover:text-[#EDEAF6] hover:border-[#FFC66B] transition-colors"
+            className="w-8 h-8 flex items-center justify-center rounded-lg bg-[#262B52] border border-[#3A4178] text-[#9AA3D6] hover:text-[#EDEAF6] hover:border-[#FFC66B] transition-colors shrink-0"
             title="Accessibility settings"
           >
             <Sliders className="w-3.5 h-3.5" />
@@ -395,14 +395,14 @@ export function TopBar() {
         {/* Privacy Chip (closes a thin ring when all 3 consent) */}
         <button
           onClick={() => setActiveView("privacy")}
-          className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs transition-all border ${
+          className={`flex items-center gap-1.5 h-8 px-2.5 rounded-full text-xs transition-all border whitespace-nowrap shrink-0 ${
             allConsented
               ? "bg-[#5FD3A0]/15 border-[#5FD3A0] text-[#5FD3A0]"
               : "bg-[#262B52] border-[#3A4178] text-[#9AA3D6] hover:border-[#FFC66B]"
           }`}
           title="Caregiver load sharing consent"
         >
-          <div className="relative w-4 h-4 flex items-center justify-center">
+          <div className="relative w-4 h-4 flex items-center justify-center shrink-0">
             <svg className="w-4 h-4 transform -rotate-90">
               <circle
                 cx="8"
@@ -427,26 +427,26 @@ export function TopBar() {
             </svg>
             <ShieldCheck className="w-2.5 h-2.5 absolute" />
           </div>
-          <span className="font-mono text-[11px]">
-            {consentedCount} of {totalCaregivers} sharing
+          <span className="font-mono text-[11px] whitespace-nowrap">
+            {consentedCount}/{totalCaregivers} {t("sharing", language)}
           </span>
         </button>
 
         {/* Toggle Handoffs Drawer */}
         <button
           onClick={() => setDrawerOpen(!drawerOpen)}
-          className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs transition-colors border ${
+          className={`flex items-center gap-1.5 h-8 px-2.5 rounded-lg text-xs transition-colors border whitespace-nowrap shrink-0 ${
             drawerOpen
               ? "bg-[#FFC66B] text-[#14182B] font-semibold border-[#FFC66B]"
               : "bg-[#262B52] border-[#3A4178] text-[#EDEAF6] hover:border-[#FFC66B]"
           }`}
           title={drawerOpen ? "Close Handoffs Drawer" : "Open Handoffs Drawer"}
         >
-          <Inbox className="w-3.5 h-3.5" />
-          <span className="hidden sm:inline">Handoffs</span>
+          <Inbox className="w-3.5 h-3.5 shrink-0" />
+          <span>{t("handoffs", language)}</span>
           {(household?.handoffs?.length ?? 0) > 0 && (
             <span
-              className={`px-1.5 py-0.2 rounded-full text-[10px] font-mono ${
+              className={`px-1.5 py-0.2 rounded-full text-[10px] font-mono shrink-0 ${
                 drawerOpen ? "bg-[#14182B] text-[#FFC66B]" : "bg-[#14182B] text-[#EDEAF6]"
               }`}
             >

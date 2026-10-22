@@ -66,79 +66,61 @@ export function ClockScrubber() {
   const currentSpeed = household?.clock.speed ?? 1;
 
   return (
-    <div className="flex flex-col items-center gap-1 text-xs select-none">
-      {/* Controls row */}
-      <div className="flex items-center gap-2 bg-[#262B52]/90 border border-[#3A4178] px-3 py-1 rounded-full shadow-sm">
+    <div className="flex items-center gap-2 bg-[#262B52]/90 border border-[#3A4178] px-3 py-1 rounded-full shadow-sm text-xs select-none">
+      <button
+        onClick={handlePlayPause}
+        className="p-1 rounded hover:bg-[#3A4178] text-[#EDEAF6] transition-colors"
+        title={isPaused ? "Play clock" : "Pause clock"}
+        aria-label={isPaused ? "Play clock" : "Pause clock"}
+      >
+        {isPaused ? <Play className="w-3.5 h-3.5 fill-[#EDEAF6]" /> : <Pause className="w-3.5 h-3.5 fill-[#EDEAF6]" />}
+      </button>
+
+      {/* Speed presets */}
+      <div className="flex items-center gap-0.5 border-l border-r border-[#3A4178] px-1.5">
+        {[1, 60, 600].map((s) => (
+          <button
+            key={s}
+            onClick={() => handleSpeed(s)}
+            className={`px-1.5 py-0.5 rounded text-[10px] font-mono transition-colors ${
+              currentSpeed === s
+                ? "bg-[#FFC66B] text-[#14182B] font-semibold"
+                : "text-[#9AA3D6] hover:text-[#EDEAF6]"
+            }`}
+          >
+            {s}x
+          </button>
+        ))}
+      </div>
+
+      {/* Quick steps */}
+      <div className="flex items-center gap-1 text-[11px] font-mono">
         <button
-          onClick={handlePlayPause}
-          className="p-1 rounded hover:bg-[#3A4178] text-[#EDEAF6] transition-colors"
-          title={isPaused ? "Play clock" : "Pause clock"}
-          aria-label={isPaused ? "Play clock" : "Pause clock"}
+          onClick={() => handleAdvance(10)}
+          className="hover:text-[#FFC66B] px-1 py-0.5 text-[#9AA3D6]"
+          title="Advance 10 minutes"
         >
-          {isPaused ? <Play className="w-3.5 h-3.5 fill-[#EDEAF6]" /> : <Pause className="w-3.5 h-3.5 fill-[#EDEAF6]" />}
+          +10m
         </button>
-
-        {/* Speed presets */}
-        <div className="flex items-center gap-0.5 border-l border-r border-[#3A4178] px-1.5">
-          {[1, 60, 600].map((s) => (
-            <button
-              key={s}
-              onClick={() => handleSpeed(s)}
-              className={`px-1.5 py-0.5 rounded text-[10px] font-mono transition-colors ${
-                currentSpeed === s
-                  ? "bg-[#FFC66B] text-[#14182B] font-semibold"
-                  : "text-[#9AA3D6] hover:text-[#EDEAF6]"
-              }`}
-            >
-              {s}x
-            </button>
-          ))}
-        </div>
-
-        {/* Quick steps */}
-        <div className="flex items-center gap-1 text-[11px] font-mono">
-          <button
-            onClick={() => handleAdvance(10)}
-            className="hover:text-[#FFC66B] px-1 py-0.5 text-[#9AA3D6]"
-            title="Advance 10 minutes"
-          >
-            +10m
-          </button>
-          <button
-            onClick={() => handleAdvance(60)}
-            className="hover:text-[#FFC66B] px-1 py-0.5 text-[#9AA3D6]"
-            title="Advance 1 hour"
-          >
-            +1h
-          </button>
-          <button
-            onClick={() => handleAdvance(360)}
-            className="hover:text-[#FFC66B] px-1 py-0.5 text-[#9AA3D6]"
-            title="Advance 6 hours"
-          >
-            +6h
-          </button>
-        </div>
-
-        <span className="font-mono text-[#FFC66B] pl-1 font-medium">
-          {dtUtc.toFormat("HH:mm:ss 'UTC'")}
-        </span>
+        <button
+          onClick={() => handleAdvance(60)}
+          className="hover:text-[#FFC66B] px-1 py-0.5 text-[#9AA3D6]"
+          title="Advance 1 hour"
+        >
+          +1h
+        </button>
+        <button
+          onClick={() => handleAdvance(360)}
+          className="hover:text-[#FFC66B] px-1 py-0.5 text-[#9AA3D6]"
+          title="Advance 6 hours"
+        >
+          +6h
+        </button>
       </div>
 
-      {/* Local city times row */}
-      <div className="flex items-center gap-3 text-[11px] text-[#9AA3D6]">
-        <span>
-          Pune <strong className="text-[#EDEAF6] font-mono">{dtPune.toFormat("HH:mm")}</strong>
-        </span>
-        <span className="text-[#3A4178]">•</span>
-        <span>
-          Berlin <strong className="text-[#EDEAF6] font-mono">{dtBerlin.toFormat("HH:mm")}</strong>
-        </span>
-        <span className="text-[#3A4178]">•</span>
-        <span>
-          Toronto <strong className="text-[#EDEAF6] font-mono">{dtToronto.toFormat("HH:mm")}</strong>
-        </span>
-      </div>
+      <span className="font-mono text-[#FFC66B] pl-1 font-medium whitespace-nowrap">
+        {dtUtc.toFormat("HH:mm:ss 'UTC'")}
+      </span>
     </div>
   );
 }

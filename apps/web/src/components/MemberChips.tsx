@@ -17,7 +17,7 @@ export function MemberChips() {
   const loadEntries = household?.loadEntries ?? [];
 
   return (
-    <div className="fixed top-[62px] left-1/2 -translate-x-1/2 z-10 flex flex-wrap items-center justify-center gap-2 max-w-xl px-2 select-none pointer-events-none">
+    <div className="fixed top-[66px] left-1/2 -translate-x-1/2 z-10 flex flex-wrap items-center justify-center gap-2 max-w-xl px-2 select-none pointer-events-none">
       {caregivers.map((c) => {
         const dt = DateTime.fromMillis(simNowMs, { zone: c.timeZone });
         const hour = dt.hour + dt.minute / 60;
