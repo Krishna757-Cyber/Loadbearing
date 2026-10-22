@@ -25,6 +25,9 @@ export function ClockScrubber() {
   const activeSimMs = household?.clock ? computeSimNow(household.clock, clockSkew) : localNow;
 
   const dtUtc = DateTime.fromMillis(activeSimMs, { zone: "utc" });
+  const dtPune = DateTime.fromMillis(activeSimMs, { zone: "Asia/Kolkata" });
+  const dtBerlin = DateTime.fromMillis(activeSimMs, { zone: "Europe/Berlin" });
+  const dtToronto = DateTime.fromMillis(activeSimMs, { zone: "America/Toronto" });
 
   const handleAction = async (action: string, payload: Record<string, unknown> = {}) => {
     try {
@@ -118,6 +121,21 @@ export function ClockScrubber() {
       <span className="font-mono text-[#FFC66B] pl-1 font-medium whitespace-nowrap">
         {dtUtc.toFormat("HH:mm:ss 'UTC'")}
       </span>
+
+      {/* Multi-timezone caregiver city clocks */}
+      <div className="flex items-center gap-2 pl-2 border-l border-[#3A4178] text-[10px] text-[#9AA3D6] whitespace-nowrap">
+        <span>
+          Pune <strong className="text-[#EDEAF6] font-mono">{dtPune.toFormat("HH:mm")}</strong>
+        </span>
+        <span className="text-[#3A4178]">•</span>
+        <span>
+          Berlin <strong className="text-[#EDEAF6] font-mono">{dtBerlin.toFormat("HH:mm")}</strong>
+        </span>
+        <span className="text-[#3A4178]">•</span>
+        <span>
+          Toronto <strong className="text-[#EDEAF6] font-mono">{dtToronto.toFormat("HH:mm")}</strong>
+        </span>
+      </div>
     </div>
   );
 }

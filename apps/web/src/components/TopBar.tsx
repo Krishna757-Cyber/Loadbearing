@@ -78,8 +78,8 @@ export function TopBar() {
               <span className="h-[2px] w-6 rounded-r-full bg-[#5B9CFF] shadow-[0_0_4px_#5B9CFF]" />
             </div>
 
-            {/* Tagline - only on very wide screens to prevent navbar squeeze */}
-            <span className="text-[10px] text-[#EDEAF6]/90 font-medium tracking-normal whitespace-nowrap hidden 2xl:inline">
+            {/* Tagline */}
+            <span className="text-[10px] text-[#EDEAF6]/90 font-medium tracking-normal whitespace-nowrap hidden md:inline">
               {t("brandTagline", language)}
             </span>
           </div>
@@ -428,7 +428,7 @@ export function TopBar() {
             <ShieldCheck className="w-2.5 h-2.5 absolute" />
           </div>
           <span className="font-mono text-[11px] whitespace-nowrap">
-            {consentedCount}/{totalCaregivers} {t("sharing", language)}
+            {consentedCount} of {totalCaregivers} {t("sharing", language)}
           </span>
         </button>
 
