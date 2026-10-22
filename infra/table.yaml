@@ -1,0 +1,45 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'LoadBearing DynamoDB Single Table Architecture'
+
+Parameters:
+  TableName:
+    Type: String
+    Default: 'loadbearing-demo'
+    Description: 'DynamoDB table name for LoadBearing'
+
+Resources:
+  LoadBearingTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Ref TableName
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: pk
+          AttributeType: S
+        - AttributeName: sk
+          AttributeType: S
+      KeySchema:
+        - AttributeName: pk
+          KeyType: HASH
+        - AttributeName: sk
+          KeyType: RANGE
+      TimeToLiveSpecification:
+        AttributeName: ttl
+        Enabled: true
+      PointInTimeRecoverySpecification:
+        PointInTimeRecoveryEnabled: true
+      Tags:
+        - Key: Project
+          Value: LoadBearing
+        - Key: Environment
+          Value: Demo
+
+Outputs:
+  TableArn:
+    Description: 'DynamoDB Table ARN'
+    Value: !GetAtt LoadBearingTable.Arn
+    Export:
+      Name: !Sub '${AWS::StackName}-TableArn'
+  TableName:
+    Description: 'DynamoDB Table Name'
+    Value: !Ref LoadBearingTable

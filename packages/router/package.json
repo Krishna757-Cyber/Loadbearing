@@ -1,0 +1,33 @@
+{
+  "name": "followthesun-router",
+  "version": "1.0.0",
+  "description": "Deterministic family care-work router that routes tasks to awake caregivers following the sun across time zones.",
+  "keywords": ["care", "routing", "timezone", "family", "scheduling"],
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": ["dist", "README.md", "LICENSE"],
+  "scripts": {
+    "build": "tsc --project tsconfig.json",
+    "typecheck": "tsc --noEmit --project tsconfig.json",
+    "test": "vitest run --coverage",
+    "clean": "rimraf dist"
+  },
+  "dependencies": {
+    "luxon": "3.5.0",
+    "@loadbearing/shared": "*"
+  },
+  "devDependencies": {
+    "@types/luxon": "3.4.2",
+    "@vitest/coverage-v8": "2.1.8",
+    "rimraf": "6.0.1",
+    "vitest": "2.1.8"
+  }
+}

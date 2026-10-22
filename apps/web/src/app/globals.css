@@ -1,0 +1,103 @@
+@import "tailwindcss";
+
+:root {
+  --bg-dusk: #14182B;
+  --panel-horizon: #262B52;
+  --border-line: #3A4178;
+  --text-mist: #EDEAF6;
+  --text-moon: #9AA3D6;
+  --accent-lantern: #FFC66B;
+  --accent-lantern-dark: #14182B;
+
+  --color-contribution: #5B9CFF;
+  --color-waiting: #FFB547;
+  --color-urgent: #FF7A7A;
+  --color-memory: #B08CFF;
+  --color-resolved: #5FD3A0;
+}
+
+html, body {
+  background-color: var(--bg-dusk);
+  color: var(--text-mist);
+  min-height: 100%;
+  font-family: var(--font-atkinson), system-ui, -apple-system, sans-serif;
+  overflow-x: hidden;
+  user-select: none;
+}
+
+/* Headings and wordmark */
+h1, h2, h3, .font-display {
+  font-family: var(--font-bricolage), system-ui, sans-serif;
+}
+
+/* Large text mode */
+html.large-text-1 {
+  font-size: 112.5%;
+}
+html.large-text-2 {
+  font-size: 125%;
+}
+
+/* High contrast mode */
+html.high-contrast {
+  --bg-dusk: #080A14;
+  --panel-horizon: #171A36;
+  --border-line: #FFFFFF;
+  --text-mist: #FFFFFF;
+  --text-moon: #DFE3FF;
+  --accent-lantern: #FFD285;
+}
+
+html.high-contrast * {
+  box-shadow: none !important;
+  text-shadow: none !important;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+html.reduced-motion * {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-dusk);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-line);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-moon);
+}
+
+/* Pulsing waiting badge */
+@keyframes pulseWaiting {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.15);
+    opacity: 0.75;
+  }
+}
+
+.animate-pulse-waiting {
+  animation: pulseWaiting 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}

@@ -1,0 +1,42 @@
+{
+  "name": "loadbearing",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm run dev --workspace=apps/mcp-server\" \"npm run dev --workspace=apps/web\"",
+    "build": "npm run build --workspace=packages/shared && npm run build --workspace=packages/router && npm run build --workspace=apps/mcp-server && npm run build --workspace=apps/web",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "lint": "eslint . --max-warnings 0",
+    "test": "vitest run --reporter=verbose",
+    "test:e2e": "playwright test",
+    "demo:check": "tsx scripts/demo-check.ts",
+    "ai:smoke": "tsx scripts/ai-smoke.ts",
+    "seed": "tsx scripts/seed.ts",
+    "verify": "npm run typecheck && npm run lint && npm run test && npm run build && npm run demo:check && npm run test:e2e"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.49.1",
+    "@types/d3-geo": "^3.1.1",
+    "@types/topojson-client": "^3.1.5",
+    "@typescript-eslint/eslint-plugin": "8.31.1",
+    "@typescript-eslint/parser": "8.31.1",
+    "@vitest/coverage-v8": "2.1.8",
+    "concurrently": "9.1.2",
+    "d3-geo": "^3.1.1",
+    "eslint": "9.18.0",
+    "eslint-plugin-react-hooks": "5.1.0",
+    "topojson-client": "^3.1.0",
+    "tsx": "4.19.2",
+    "typescript": "5.7.3",
+    "vitest": "2.1.8",
+    "world-atlas": "^2.0.2"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}
