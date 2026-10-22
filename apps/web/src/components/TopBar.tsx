@@ -15,7 +15,7 @@ import {
 } from "lucide-react";
 import { useAppStore } from "@/store";
 import { ClockScrubber } from "./ClockScrubber";
-import { t, LANGUAGES, type SupportedLanguage } from "@/lib/i18n";
+import { t, LANGUAGES } from "@/lib/i18n";
 
 export function TopBar() {
   const viewerId = useAppStore((s) => s.viewerId);

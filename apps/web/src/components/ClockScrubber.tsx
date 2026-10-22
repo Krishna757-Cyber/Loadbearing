@@ -25,9 +25,6 @@ export function ClockScrubber() {
   const activeSimMs = household?.clock ? computeSimNow(household.clock, clockSkew) : localNow;
 
   const dtUtc = DateTime.fromMillis(activeSimMs, { zone: "utc" });
-  const dtPune = DateTime.fromMillis(activeSimMs, { zone: "Asia/Kolkata" });
-  const dtBerlin = DateTime.fromMillis(activeSimMs, { zone: "Europe/Berlin" });
-  const dtToronto = DateTime.fromMillis(activeSimMs, { zone: "America/Toronto" });
 
   const handleAction = async (action: string, payload: Record<string, unknown> = {}) => {
     try {

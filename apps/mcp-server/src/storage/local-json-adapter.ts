@@ -74,7 +74,17 @@ export class LocalJsonAdapter implements StorageAdapter {
     await fs.mkdir(dir, { recursive: true });
     const tempPath = `${this.filePath}.${Date.now()}.${Math.random().toString(36).slice(2)}.tmp`;
     await fs.writeFile(tempPath, JSON.stringify(data, null, 2), "utf-8");
-    await fs.rename(tempPath, this.filePath);
+    try {
+      await fs.rename(tempPath, this.filePath);
+    } catch (err: unknown) {
+      const code = (err as { code?: string })?.code;
+      if (code === "EPERM" || code === "EBUSY" || code === "EEXIST") {
+        await fs.copyFile(tempPath, this.filePath);
+        await fs.unlink(tempPath).catch(() => {});
+      } else {
+        throw err;
+      }
+    }
   }
 
   async loadHousehold(): Promise<HouseholdState> {

@@ -9,15 +9,16 @@
   ],
   "scripts": {
     "dev": "concurrently \"npm run dev --workspace=apps/mcp-server\" \"npm run dev --workspace=apps/web\"",
-    "build": "npm run build --workspace=packages/shared && npm run build --workspace=packages/router && npm run build --workspace=apps/mcp-server && npm run build --workspace=apps/web",
-    "typecheck": "npm run typecheck --workspaces --if-present",
+    "build:packages": "npm run build --workspace=packages/shared && npm run build --workspace=packages/router",
+    "build": "npm run build:packages && npm run build --workspace=apps/mcp-server && npm run build --workspace=apps/web",
+    "typecheck": "npm run build:packages && npm run typecheck --workspaces --if-present",
     "lint": "eslint . --max-warnings 0",
     "test": "vitest run --reporter=verbose",
     "test:e2e": "playwright test",
     "demo:check": "tsx scripts/demo-check.ts",
     "ai:smoke": "tsx scripts/ai-smoke.ts",
     "seed": "tsx scripts/seed.ts",
-    "verify": "npm run typecheck && npm run lint && npm run test && npm run build && npm run demo:check && npm run test:e2e"
+    "verify": "npm run build:packages && npm run typecheck && npm run lint && npm run test && npm run build && npm run demo:check && npm run test:e2e"
   },
   "devDependencies": {
     "@playwright/test": "1.49.1",

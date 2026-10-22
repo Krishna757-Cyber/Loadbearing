@@ -27,6 +27,7 @@ import {
   computeRebalance,
   loadShares,
   localTime,
+  type RankedCandidate,
 } from "followthesun-router";
 import {
   areAllCaregiversConsented,
@@ -436,7 +437,7 @@ export function registerAllTools(
 
         // Privacy rule on ranked candidates:
         // "ranked (share_pct null unless load is visible)"
-        const rankedOutput = routeResult.ranked.map((r) => ({
+        const rankedOutput = routeResult.ranked.map((r: RankedCandidate) => ({
           ...r,
           sharePct: allConsented ? r.sharePct : null,
         }));
@@ -542,7 +543,7 @@ export function registerAllTools(
           const needsLocal = moment?.classification.needsLocalPresence ?? false;
           const kind = moment?.classification.loadKind ?? "doing";
           const candidateIds = (moment?.sharedWith ?? caregivers.map((c) => c.id)).filter(
-            (id) => !skipped.includes(id)
+            (id: string) => !skipped.includes(id)
           );
 
           const routeRes = route({

@@ -91,7 +91,7 @@ export function filterHouseholdForViewer(
     .map((h) => {
       // Audit trail redaction:
       // "other private moments are hidden everywhere, including audit entries ('a private note')"
-      const redactedHistory = h.history.map((audit) => {
+      const redactedHistory = h.history.map((audit: AuditEntry) => {
         if (!visibleMomentIds.has(h.momentId)) {
           return {
             ...audit,

@@ -95,7 +95,6 @@ function SceneContent() {
   const household = useAppStore((s) => s.household);
   const viewerId = useAppStore((s) => s.viewerId);
   const clockSkew = useAppStore((s) => s.clockSkew);
-  const [reducedDots, setReducedDots] = useState(false);
   const setSceneMode = useAppStore((s) => s.setSceneMode);
 
   const { camera } = useThree();
@@ -114,7 +113,6 @@ function SceneContent() {
       <CameraRig />
 
       <PerformanceMonitor
-        onDecline={() => setReducedDots(true)}
         onFallback={() => setSceneMode("2d")}
       />
 

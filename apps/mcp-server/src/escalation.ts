@@ -55,7 +55,7 @@ export async function checkAndApplyEscalations(
       const loadKind = moment?.classification.loadKind ?? "doing";
 
       const candidateIds = (moment?.sharedWith ?? caregivers.map((c) => c.id)).filter(
-        (id) => id !== moment?.capturedBy
+        (id: string) => id !== moment?.capturedBy
       );
 
       const backup = caregivers.find((c) => c.isBackup);
