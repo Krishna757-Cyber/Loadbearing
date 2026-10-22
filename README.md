@@ -3,7 +3,6 @@
 > **"Care shared fairly. Nothing falls between people."**
 
 [![CI](https://github.com/loadbearing/loadbearing/actions/workflows/ci.yml/badge.svg)](https://github.com/loadbearing/loadbearing/actions)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Node: >=20](https://img.shields.io/badge/Node->=20.0.0-green.svg)](https://nodejs.org/)
 [![MCP Spec: 2025-11-25](https://img.shields.io/badge/MCP-2025--11--25-blue.svg)](https://modelcontextprotocol.io/)
 
@@ -174,7 +173,4 @@ This executes:
 
 ---
 
-## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-The core routing package is published under `packages/router/` as `followthesun-router` for the Open Source track.
