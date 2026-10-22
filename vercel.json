@@ -1,0 +1,41 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "services": {
+    "mcp-server": {
+      "root": "apps/mcp-server",
+      "framework": "express"
+    },
+    "web": {
+      "root": "apps/web",
+      "framework": "nextjs",
+      "bindings": [
+        {
+          "type": "service",
+          "service": "mcp-server",
+          "format": "url",
+          "env": "MCP_SERVER_URL"
+        }
+      ]
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/events",
+      "destination": {
+        "service": "mcp-server"
+      }
+    },
+    {
+      "source": "/mcp",
+      "destination": {
+        "service": "mcp-server"
+      }
+    },
+    {
+      "source": "/(.*)",
+      "destination": {
+        "service": "web"
+      }
+    }
+  ]
+}

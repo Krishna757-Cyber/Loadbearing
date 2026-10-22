@@ -48,7 +48,10 @@ export default function Home() {
   // Real-time EventSource connection to MCP server
   useEffect(() => {
     const sseUrl =
-      process.env.NEXT_PUBLIC_MCP_EVENTS_URL ?? "http://localhost:8787/events";
+      process.env.NEXT_PUBLIC_MCP_EVENTS_URL ??
+      (typeof window !== "undefined" && window.location.hostname !== "localhost"
+        ? "/events"
+        : "http://localhost:8787/events");
 
     let es: EventSource | null = null;
     try {

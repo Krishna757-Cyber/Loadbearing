@@ -7,7 +7,11 @@ import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { StreamableHTTPClientTransport } from "@modelcontextprotocol/sdk/client/streamableHttp.js";
 
 const MCP_PORT = process.env.MCP_PORT ?? "8787";
-export const MCP_BASE_URL = process.env.MCP_URL ? new URL(process.env.MCP_URL).origin : `http://localhost:${MCP_PORT}`;
+export const MCP_BASE_URL = process.env.MCP_SERVER_URL
+  ? process.env.MCP_SERVER_URL.replace(/\/$/, "")
+  : process.env.MCP_URL
+  ? new URL(process.env.MCP_URL).origin
+  : `http://localhost:${MCP_PORT}`;
 export const MCP_ENDPOINT = `${MCP_BASE_URL}/mcp`;
 export const ADMIN_TOKEN = process.env.ADMIN_TOKEN ?? "demo-admin-token";
 

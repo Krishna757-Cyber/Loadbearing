@@ -410,7 +410,9 @@ export function computeRebalance(input: RebalanceInput): RebalanceProposal | nul
       ...Array.from({ length: REBALANCE_PLAN_TASKS }, (_, i) => ({
         memberId: capacity.memberId,
         effectiveWeight: KIND_WEIGHT.planning,
-        performedAt: new Date(Date.now() + i * 1000).toISOString(),
+        performedAt: DateTime.fromISO(now, { zone: "utc" })
+          .minus({ seconds: i + 1 })
+          .toISO() ?? now,
       })),
     ];
 
