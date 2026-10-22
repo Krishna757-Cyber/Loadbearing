@@ -50,7 +50,7 @@ export function TopBar() {
           <img
             src="/logo.png"
             alt="LoadBearing Logo"
-            className="w-9 h-9 rounded-full border border-[#FFC66B]/60 shadow-[0_0_12px_rgba(255,198,107,0.4)] object-cover shrink-0"
+            className="w-9 h-9 rounded-full object-contain shrink-0 drop-shadow-[0_0_8px_rgba(255,198,107,0.4)]"
           />
           <div className="flex flex-col justify-center">
             {/* 3D Gradient Wordmark: Load in Ice-White, Bearing in Metallic Gold */}
