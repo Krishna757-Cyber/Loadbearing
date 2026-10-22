@@ -46,18 +46,32 @@ export function TopBar() {
     <header className="relative z-20 flex items-center justify-between h-14 px-4 bg-[#14182B]/90 backdrop-blur border-b border-[#3A4178] select-none">
       {/* Left: Brand wordmark & view navigation */}
       <div className="flex items-center gap-4">
-        <div className="flex items-center gap-2.5">
+        <div className="flex items-center gap-3">
           <img
             src="/logo.png"
             alt="LoadBearing Logo"
-            className="w-8 h-8 rounded-full border border-[#FFC66B]/60 shadow-[0_0_12px_rgba(255,198,107,0.35)] object-cover"
+            className="w-9 h-9 rounded-full border border-[#FFC66B]/60 shadow-[0_0_12px_rgba(255,198,107,0.4)] object-cover shrink-0"
           />
-          <div className="flex items-baseline gap-2">
-            <span className="font-display text-lg font-bold tracking-tight text-[#FFC66B]">
-              LoadBearing
-            </span>
-            <span className="text-[11px] text-[#9AA3D6] hidden sm:inline">
-              Care shared fairly
+          <div className="flex flex-col justify-center">
+            {/* 3D Gradient Wordmark: Load in Ice-White, Bearing in Metallic Gold */}
+            <div className="flex items-center font-display text-[19px] leading-none font-extrabold tracking-tight">
+              <span className="text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
+                Load
+              </span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-b from-[#FFE7A8] via-[#FFB84C] to-[#E58F10] drop-shadow-[0_2px_6px_rgba(229,143,16,0.35)]">
+                Bearing
+              </span>
+            </div>
+
+            {/* Accent divider: Dual gold & sky-blue bar */}
+            <div className="flex items-center my-0.5">
+              <span className="h-[2px] w-6 rounded-l-full bg-[#FFB84C] shadow-[0_0_4px_#FFB84C]" />
+              <span className="h-[2px] w-6 rounded-r-full bg-[#5B9CFF] shadow-[0_0_4px_#5B9CFF]" />
+            </div>
+
+            {/* Tagline */}
+            <span className="text-[10px] text-[#EDEAF6]/90 font-medium tracking-normal whitespace-nowrap hidden sm:inline">
+              Care shared fairly. Nothing falls between people.
             </span>
           </div>
         </div>
