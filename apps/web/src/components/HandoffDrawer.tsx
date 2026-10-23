@@ -65,7 +65,7 @@ export function HandoffDrawer() {
       {/* Drawer Toggle Tab for Desktop/Tablet */}
       <button
         onClick={() => setDrawerOpen(!drawerOpen)}
-        className={`fixed right-0 top-20 z-20 p-2 rounded-l-lg shadow-md transition-all border-l border-y ${
+        className={`fixed right-0 top-56 z-20 p-2 rounded-l-lg shadow-md transition-all border-l border-y ${
           isLight
             ? "bg-white border-slate-300 text-slate-700 hover:text-slate-900"
             : "bg-[#262B52] border-[#3A4178] text-[#9AA3D6] hover:text-[#EDEAF6]"
@@ -77,7 +77,7 @@ export function HandoffDrawer() {
 
       {/* Slide-out Drawer Panel */}
       <aside
-        className={`fixed top-14 bottom-0 right-0 z-20 w-full sm:w-[360px] shadow-2xl flex flex-col transition-transform duration-300 border-l ${
+        className={`fixed top-14 bottom-0 right-0 z-40 w-full sm:w-[360px] shadow-2xl flex flex-col transition-transform duration-300 border-l ${
           isLight
             ? "bg-white/98 backdrop-blur border-slate-200 text-slate-900"
             : "bg-[#262B52]/95 backdrop-blur border-[#3A4178] text-[#EDEAF6]"
