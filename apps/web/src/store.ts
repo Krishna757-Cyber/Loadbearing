@@ -5,6 +5,7 @@
 "use client";
 
 import { create } from "zustand";
+import { getFallbackSeedState } from "@/lib/seed";
 
 // ─── Types ──────────────────────────────────────────────────────────────────
 
@@ -173,8 +174,8 @@ export interface AppStore {
 let toastCounter = 0;
 
 export const useAppStore = create<AppStore>((set) => ({
-  household: null,
-  version: 0,
+  household: getFallbackSeedState("priya"),
+  version: 1,
   viewerId: "priya",
   language: "en",
   themeMode: "dark",
