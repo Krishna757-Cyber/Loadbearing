@@ -156,7 +156,7 @@ export function ClockScrubber() {
       </span>
 
       {/* Multi-timezone caregiver city clocks */}
-      <div className="hidden xl:flex items-center gap-1.5 pl-1.5 border-l border-[#3A4178] text-[10px] text-[#9AA3D6] whitespace-nowrap">
+      <div className="flex items-center gap-1.5 pl-1.5 border-l border-[#3A4178] text-[10px] text-[#9AA3D6] whitespace-nowrap">
         <span>
           Pune <strong className="text-[#EDEAF6] font-mono">{dtPune.toFormat("HH:mm")}</strong>
         </span>
