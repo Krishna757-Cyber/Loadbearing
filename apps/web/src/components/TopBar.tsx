@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   ShieldCheck,
   Languages,
@@ -47,10 +47,26 @@ export function TopBar() {
   const allConsented = consentedCount === totalCaregivers;
 
   const currentMember = household?.members.find((m) => m.id === viewerId);
+  const topBarRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (topBarRef.current && !topBarRef.current.contains(e.target as Node)) {
+        setA11yMenuOpen(false);
+        setThemeMenuOpen(false);
+        setViewMenuOpen(false);
+        setLangMenuOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   return (
-    <>
-      <header className="relative z-20 flex items-center justify-between h-14 px-2 sm:px-3 lg:px-4 bg-[#14182B]/90 backdrop-blur border-b border-[#3A4178] select-none gap-1.5 lg:gap-2">
+    <header
+      ref={topBarRef}
+      className="relative z-40 flex items-center justify-between h-14 px-2 sm:px-3 lg:px-4 bg-[#14182B]/90 backdrop-blur border-b border-[#3A4178] select-none gap-1.5 lg:gap-2"
+    >
       {/* Left: Brand wordmark & view navigation */}
       <div className="flex items-center gap-2 lg:gap-3 shrink-0">
         <div className="flex items-center gap-2">
@@ -442,19 +458,5 @@ export function TopBar() {
         </button>
       </div>
     </header>
-
-    {/* Backdrop for open dropdown menus */}
-    {(a11yMenuOpen || themeMenuOpen || viewMenuOpen || langMenuOpen) && (
-      <div
-        className="fixed inset-0 z-30 bg-transparent"
-        onClick={() => {
-          setA11yMenuOpen(false);
-          setThemeMenuOpen(false);
-          setViewMenuOpen(false);
-          setLangMenuOpen(false);
-        }}
-      />
-    )}
-  </>
   );
 }
