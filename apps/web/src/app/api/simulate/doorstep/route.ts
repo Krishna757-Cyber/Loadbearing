@@ -1,6 +1,7 @@
-import type { NextRequest} from "next/server";
+import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { executeTool } from "@/lib/mcp-client";
+import { executeToolFallback } from "@/lib/tool-fallback";
 
 export const dynamic = "force-dynamic";
 
@@ -25,12 +26,22 @@ export async function POST(request: NextRequest) {
     const preset = DOORSTEP_PRESETS[type] ?? DOORSTEP_PRESETS.delivery;
 
     // 1. Capture moment as source doorstep, captured_by system
-    const captureResult = await executeTool("capture_moment", {
-      text: preset.text,
-      source: "doorstep",
-      captured_by: "system",
-      language: "en",
-    });
+    let captureResult;
+    try {
+      captureResult = await executeTool("capture_moment", {
+        text: preset.text,
+        source: "doorstep",
+        captured_by: "system",
+        language: "en",
+      });
+    } catch {
+      captureResult = executeToolFallback("capture_moment", {
+        text: preset.text,
+        source: "doorstep",
+        captured_by: "system",
+        language: "en",
+      });
+    }
 
     const structured = (captureResult as { structuredContent?: Record<string, unknown> })?.structuredContent;
     const momentId = (structured?.moment_id as string) ?? "";
@@ -40,11 +51,19 @@ export async function POST(request: NextRequest) {
 
     // 2. If care_task, create handoff sharing with all caregivers
     if (momentId && classification?.kind === "care_task") {
-      handoffResult = await executeTool("create_handoff", {
-        moment_id: momentId,
-        actor_id: "system",
-        share_with: ["priya", "arjun", "meera"],
-      });
+      try {
+        handoffResult = await executeTool("create_handoff", {
+          moment_id: momentId,
+          actor_id: "system",
+          share_with: ["priya", "arjun", "meera"],
+        });
+      } catch {
+        handoffResult = executeToolFallback("create_handoff", {
+          moment_id: momentId,
+          actor_id: "system",
+          share_with: ["priya", "arjun", "meera"],
+        });
+      }
     }
 
     return NextResponse.json({

@@ -46,6 +46,7 @@ export function executeToolFallback(
       const text = String(args.text || "").trim();
       const capturedBy = String(args.captured_by || "priya");
       const lang = String(args.language || "en");
+      const source = String(args.source || "voice");
       const momentId = `mo_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 6)}`;
 
       if (isEmergency(text)) {
@@ -76,6 +77,60 @@ export function executeToolFallback(
       }
 
       const lower = text.toLowerCase();
+
+      // Doorstep event handling
+      if (source === "doorstep" || capturedBy === "system") {
+        if (lower.includes("newspaper") || lower.includes("courier") || lower.includes("letters") || lower.includes("mail")) {
+          const structured = {
+            moment_id: momentId,
+            classification: {
+              kind: "info",
+              loadKind: null,
+              urgency: "calm",
+              needsLocalPresence: false,
+              summary: "Regular postal courier dropped daily mail",
+              sensitive: false,
+              emergency: false,
+            },
+            credits: [],
+            duplicate_of: null,
+            next: "logged_only",
+            ai_source: "rules",
+            message: "Regular postal courier delivery logged as info.",
+          };
+          return {
+            content: [{ type: "text", text: JSON.stringify(structured, null, 2) }],
+            structuredContent: structured,
+          };
+        }
+
+        const isDelivery = lower.includes("delivery") || lower.includes("box") || lower.includes("porch");
+        const summary = isDelivery ? "Bring in delivery box from front porch" : "Late evening doorstep check-in";
+        const structured = {
+          moment_id: momentId,
+          classification: {
+            kind: "care_task",
+            loadKind: "doing",
+            urgency: "urgent_not_emergency",
+            needsLocalPresence: true,
+            summary,
+            sensitive: false,
+            emergency: false,
+          },
+          credits: [],
+          duplicate_of: null,
+          next: "ask_consent",
+          ai_source: "rules",
+          message: isDelivery
+            ? "A delivery box was left at Dadi's front porch. Assigning someone to check it."
+            : "An unexpected visitor is knocking at Dadi's front door. Assigning someone to check in.",
+        };
+        return {
+          content: [{ type: "text", text: JSON.stringify(structured, null, 2) }],
+          structuredContent: structured,
+        };
+      }
+
       const isMemory =
         lower.includes("kheer") ||
         lower.includes("recipe") ||
@@ -163,10 +218,19 @@ export function executeToolFallback(
       const handoffId = `ho_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 6)}`;
 
       // Deterministic follow-the-sun routing:
-      // If Priya (Pune, IST) is captor, route to Arjun (Berlin, awake afternoon, lower current load)
-      const assigneeId = actorId === "arjun" ? "meera" : "arjun";
-      const assigneeCity = assigneeId === "arjun" ? "Berlin" : "Toronto";
-      const localTimeStr = assigneeId === "arjun" ? "14:33" : "08:33";
+      // If actor is system (doorstep event), route to Meera (Toronto) as per demo UI spec
+      // If actor is Priya (Pune, IST), route to Arjun (Berlin, awake afternoon)
+      let assigneeId = "arjun";
+      if (actorId === "system") {
+        assigneeId = "meera";
+      } else if (actorId === "arjun") {
+        assigneeId = "meera";
+      } else {
+        assigneeId = "arjun";
+      }
+
+      const assigneeCity = assigneeId === "arjun" ? "Berlin" : (assigneeId === "meera" ? "Toronto" : "Pune");
+      const localTimeStr = assigneeId === "arjun" ? "18:30" : (assigneeId === "meera" ? "12:30" : "22:00");
 
       const structured = {
         handoff_id: handoffId,
