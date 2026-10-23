@@ -63,7 +63,7 @@ export const SEED_MEMBERS: MemberState[] = [
   },
 ];
 
-export function getFallbackSeedState(viewerId: string = "priya"): HouseholdData {
+export function getFallbackSeedState(_viewerId: string = "priya"): HouseholdData {
   return {
     id: "demo",
     members: SEED_MEMBERS,
