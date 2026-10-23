@@ -169,6 +169,7 @@ export interface AppStore {
   setReducedMotion: (v: boolean) => void;
   setClockSkew: (skew: number) => void;
   setActiveFlightHandoffId: (id: string | null) => void;
+  updateClock: (clockUpdate: Partial<ClockState> | ((prev: ClockState) => ClockState)) => void;
 }
 
 let toastCounter = 0;
@@ -193,8 +194,8 @@ export const useAppStore = create<AppStore>((set) => ({
 
   setHousehold: (data) =>
     set((state) => {
-      // Discard stale data
-      if (data.version <= state.version && state.household) return state;
+      // Discard strictly older data
+      if (data.version < state.version && state.household) return state;
       const normalizedData: HouseholdData = {
         ...data,
         loadEntries: data.loadEntries ?? [],
@@ -203,7 +204,20 @@ export const useAppStore = create<AppStore>((set) => ({
         handoffs: data.handoffs ?? [],
         members: data.members ?? [],
       };
-      return { household: normalizedData, version: data.version };
+      return { household: normalizedData, version: Math.max(state.version, data.version) };
+    }),
+  updateClock: (clockUpdate) =>
+    set((state) => {
+      if (!state.household) return state;
+      const prevClock = state.household.clock;
+      const newClock =
+        typeof clockUpdate === "function" ? clockUpdate(prevClock) : { ...prevClock, ...clockUpdate };
+      return {
+        household: {
+          ...state.household,
+          clock: newClock,
+        },
+      };
     }),
   setViewerId: (id) => set({ viewerId: id }),
   setLanguage: (lang) => set({ language: lang }),

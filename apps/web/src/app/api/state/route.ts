@@ -1,7 +1,8 @@
-import type { NextRequest} from "next/server";
+import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { MCP_BASE_URL } from "@/lib/mcp-client";
 import { getFallbackSeedState } from "@/lib/seed";
+import { getServerClock } from "@/lib/server-state";
 
 export const dynamic = "force-dynamic";
 
@@ -22,9 +23,12 @@ export async function GET(request: NextRequest) {
     // If backend is not deployed as a separate microservice, serve seed state
   }
 
-  // Gracefully fallback to seed state so UI, Globe, and caregivers render perfectly
+  const seedState = getFallbackSeedState(viewer);
+  // Inject the persisted server-side simulated clock so time jumps remain permanent
+  seedState.clock = getServerClock();
+
   return NextResponse.json({
     ok: true,
-    data: getFallbackSeedState(viewer),
+    data: seedState,
   });
 }
