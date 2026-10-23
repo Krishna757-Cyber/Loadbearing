@@ -6,8 +6,8 @@
   "main": "dist/index.js",
   "scripts": {
     "dev": "tsx watch src/index.ts",
-    "build": "tsc --project tsconfig.json",
-    "typecheck": "tsc --noEmit --project tsconfig.json",
+    "build": "npm --prefix ../.. run build:packages && tsc --project tsconfig.json",
+    "typecheck": "npm --prefix ../.. run build:packages && tsc --noEmit --project tsconfig.json",
     "start": "node dist/index.js",
     "test": "vitest run"
   },

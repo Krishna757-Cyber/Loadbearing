@@ -1,0 +1,23 @@
+version: "3.8"
+
+services:
+  loadbearing:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+      - "8787:8787"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - MCP_PORT=8787
+      - AWS_REGION=us-east-1
+      - BEDROCK_MODEL_ID=anthropic.claude-3-5-haiku-20241022-v1:0
+      - AI_MODE=bedrock
+      - STORAGE=dynamo
+      - DYNAMO_TABLE=loadbearing-demo
+      - ADMIN_TOKEN=change-me-in-production
+      - ACK_MINUTES=2
+      - LOG_LEVEL=info
+    restart: unless-stopped

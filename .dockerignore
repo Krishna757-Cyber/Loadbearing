@@ -1,0 +1,11 @@
+node_modules
+.next
+dist
+.git
+.github
+coverage
+test-results
+devpost-images
+*.log
+.env
+.env.local

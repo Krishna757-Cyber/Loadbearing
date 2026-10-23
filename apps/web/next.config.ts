@@ -1,9 +1,23 @@
 import type { NextConfig } from "next";
 import path from "node:path";
 
+const MCP_SERVER_URL = process.env.MCP_SERVER_URL || process.env.MCP_URL || "http://127.0.0.1:8787";
+
 const nextConfig: NextConfig = {
   outputFileTracingRoot: path.resolve(__dirname, "../../"),
   transpilePackages: ["@loadbearing/shared", "followthesun-router"],
+  async rewrites() {
+    return [
+      {
+        source: "/events",
+        destination: `${MCP_SERVER_URL}/events`,
+      },
+      {
+        source: "/mcp",
+        destination: `${MCP_SERVER_URL}/mcp`,
+      },
+    ];
+  },
   async headers() {
     return [
       {
