@@ -9,8 +9,8 @@ node_modules/
 **/node_modules/
 
 # Build outputs
-dist/
-**/dist/
+apps/**/dist/
+!packages/**/dist/
 .next/
 **/.next/
 out/

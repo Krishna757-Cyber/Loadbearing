@@ -19,6 +19,7 @@
     "ai:smoke": "tsx scripts/ai-smoke.ts",
     "seed": "tsx scripts/seed.ts",
     "start": "concurrently \"npm run start --workspace=apps/mcp-server\" \"npm run start --workspace=apps/web\"",
+    "postinstall": "npm run build:packages",
     "verify": "npm run build:packages && npm run typecheck && npm run lint && npm run test && npm run build && npm run demo:check && npm run test:e2e"
   },
   "dependencies": {
