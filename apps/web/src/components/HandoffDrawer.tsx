@@ -65,7 +65,7 @@ export function HandoffDrawer() {
       {/* Drawer Toggle Tab for Desktop/Tablet */}
       <button
         onClick={() => setDrawerOpen(!drawerOpen)}
-        className={`fixed right-0 top-56 z-20 p-2 rounded-l-lg shadow-md transition-all border-l border-y ${
+        className={`fixed right-0 top-20 z-20 p-2 rounded-l-lg shadow-md transition-all border-l border-y ${
           isLight
             ? "bg-white border-slate-300 text-slate-700 hover:text-slate-900"
             : "bg-[#262B52] border-[#3A4178] text-[#9AA3D6] hover:text-[#EDEAF6]"

@@ -7,7 +7,6 @@ import {
   Eye,
   Sliders,
   ChevronDown,
-  Inbox,
   Sun,
   Moon,
   Palette,
@@ -27,8 +26,6 @@ export function TopBar() {
   const activeView = useAppStore((s) => s.activeView);
   const setActiveView = useAppStore((s) => s.setActiveView);
   const household = useAppStore((s) => s.household);
-  const drawerOpen = useAppStore((s) => s.drawerOpen);
-  const setDrawerOpen = useAppStore((s) => s.setDrawerOpen);
   const highContrast = useAppStore((s) => s.highContrast);
   const setHighContrast = useAppStore((s) => s.setHighContrast);
   const largeText = useAppStore((s) => s.largeText);
@@ -99,13 +96,24 @@ export function TopBar() {
             <button
               key={tab.id}
               onClick={() => setActiveView(tab.id)}
-              className={`px-2 py-1 rounded-md transition-colors whitespace-nowrap text-[11px] ${
+              className={`flex items-center gap-1 px-2 py-1 rounded-md transition-colors whitespace-nowrap text-[11px] ${
                 activeView === tab.id
                   ? "bg-[#FFC66B] text-[#14182B] font-semibold"
                   : "text-[#9AA3D6] hover:text-[#EDEAF6]"
               }`}
             >
-              {tab.label}
+              <span>{tab.label}</span>
+              {tab.id === "handoffs" && (household?.handoffs?.length ?? 0) > 0 && (
+                <span
+                  className={`px-1 rounded-full text-[9px] font-mono leading-none py-0.5 ${
+                    activeView === tab.id
+                      ? "bg-[#14182B] text-[#FFC66B]"
+                      : "bg-[#14182B] text-[#EDEAF6]"
+                  }`}
+                >
+                  {household?.handoffs?.length}
+                </span>
+              )}
             </button>
           ))}
         </nav>
@@ -214,171 +222,17 @@ export function TopBar() {
             </div>
           )}
         </div>
-      </div>
-    </header>
-
-    {/* Backdrop for open dropdown menus */}
-    {(a11yMenuOpen || themeMenuOpen || viewMenuOpen || langMenuOpen) && (
-      <div
-        className="fixed inset-0 z-30 bg-transparent"
-        onClick={() => {
-          setA11yMenuOpen(false);
-          setThemeMenuOpen(false);
-          setViewMenuOpen(false);
-          setLangMenuOpen(false);
-        }}
-      />
-    )}
-
-    {/* Dedicated Vertical Utility Dock: Handoffs, Consent Status, Accessibility & Theme */}
-    <aside
-      aria-label="Caregiver and display controls"
-      className="fixed right-3 top-16 z-30 flex flex-col items-stretch gap-1.5 p-1.5 rounded-xl bg-[#14182B]/95 backdrop-blur-md border border-[#3A4178] shadow-2xl w-44 select-none pointer-events-auto"
-    >
-      {/* Toggle Handoffs Drawer */}
-      <button
-        onClick={() => setDrawerOpen(!drawerOpen)}
-        className={`flex items-center justify-between gap-2 h-8 px-2.5 rounded-lg text-xs transition-colors border w-full ${
-          drawerOpen
-            ? "bg-[#FFC66B] text-[#14182B] font-semibold border-[#FFC66B]"
-            : "bg-[#262B52] border-[#3A4178] text-[#EDEAF6] hover:border-[#FFC66B]"
-        }`}
-        title={drawerOpen ? "Close Handoffs Drawer" : "Open Handoffs Drawer"}
-      >
-        <div className="flex items-center gap-1.5">
-          <Inbox className="w-3.5 h-3.5 shrink-0" />
-          <span className="text-[11px] font-medium">{t("handoffs", language)}</span>
-        </div>
-        {(household?.handoffs?.length ?? 0) > 0 && (
-          <span
-            className={`px-1.5 py-0.2 rounded-full text-[10px] font-mono shrink-0 ${
-              drawerOpen ? "bg-[#14182B] text-[#FFC66B]" : "bg-[#14182B] text-[#EDEAF6]"
-            }`}
-          >
-            {household?.handoffs?.length}
-          </span>
-        )}
-      </button>
-
-      {/* Privacy Chip (closes a thin ring when all 3 consent) */}
-      <button
-        onClick={() => setActiveView("privacy")}
-        className={`flex items-center justify-between gap-1.5 h-8 px-2.5 rounded-lg text-xs transition-all border w-full ${
-          allConsented
-            ? "bg-[#5FD3A0]/15 border-[#5FD3A0] text-[#5FD3A0]"
-            : "bg-[#262B52] border-[#3A4178] text-[#9AA3D6] hover:border-[#FFC66B]"
-        }`}
-        title="Caregiver load sharing consent"
-      >
-        <div className="flex items-center gap-1.5">
-          <div className="relative w-4 h-4 flex items-center justify-center shrink-0">
-            <svg className="w-4 h-4 transform -rotate-90">
-              <circle
-                cx="8"
-                cy="8"
-                r="6"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                fill="none"
-                className="opacity-25"
-              />
-              <circle
-                cx="8"
-                cy="8"
-                r="6"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                fill="none"
-                strokeDasharray="37.7"
-                strokeDashoffset={37.7 - (37.7 * (consentedCount / totalCaregivers))}
-                className="transition-all duration-500"
-              />
-            </svg>
-            <ShieldCheck className="w-2.5 h-2.5 absolute" />
-          </div>
-          <span className="font-mono text-[10px] whitespace-nowrap">
-            {consentedCount} of {totalCaregivers} {t("sharing", language)}
-          </span>
-        </div>
-      </button>
-
-      {/* Bottom row: Accessibility Settings & Theme Mode */}
-      <div className="flex items-center gap-1.5 pt-1 border-t border-[#3A4178]/70">
-        {/* Accessibility Menu */}
-        <div className="relative flex-1">
-          <button
-            onClick={() => {
-              setA11yMenuOpen(!a11yMenuOpen);
-              setThemeMenuOpen(false);
-            }}
-            className="w-full h-8 flex items-center justify-center rounded-lg bg-[#262B52] border border-[#3A4178] text-[#9AA3D6] hover:text-[#EDEAF6] hover:border-[#FFC66B] transition-colors"
-            title="Accessibility settings"
-          >
-            <Sliders className="w-3.5 h-3.5" />
-          </button>
-
-          {a11yMenuOpen && (
-            <div className="absolute right-0 top-full mt-1 w-52 bg-[#262B52] border border-[#3A4178] rounded-lg shadow-xl p-2 z-50 text-xs flex flex-col gap-2">
-              <div className="font-semibold text-[#EDEAF6] pb-1 border-b border-[#3A4178]">
-                Display & Motion
-              </div>
-              <label className="flex items-center justify-between cursor-pointer">
-                <span>High Contrast</span>
-                <input
-                  type="checkbox"
-                  checked={highContrast}
-                  onChange={(e) => {
-                    setHighContrast(e.target.checked);
-                    document.documentElement.classList.toggle("high-contrast", e.target.checked);
-                  }}
-                  className="accent-[#FFC66B]"
-                />
-              </label>
-              <label className="flex items-center justify-between cursor-pointer">
-                <span>Large Text (+12.5%)</span>
-                <input
-                  type="checkbox"
-                  checked={largeText}
-                  onChange={(e) => {
-                    setLargeText(e.target.checked);
-                    document.documentElement.classList.toggle("large-text-1", e.target.checked);
-                  }}
-                  className="accent-[#FFC66B]"
-                />
-              </label>
-              <label className="flex items-center justify-between cursor-pointer">
-                <span>Reduced Motion</span>
-                <input
-                  type="checkbox"
-                  checked={reducedMotion}
-                  onChange={(e) => {
-                    setReducedMotion(e.target.checked);
-                    document.documentElement.classList.toggle("reduced-motion", e.target.checked);
-                  }}
-                  className="accent-[#FFC66B]"
-                />
-              </label>
-              <div className="flex items-center justify-between pt-1 border-t border-[#3A4178]">
-                <span>Scene View</span>
-                <button
-                  onClick={() => setSceneMode(sceneMode === "3d" ? "2d" : "3d")}
-                  className="px-2 py-0.5 rounded bg-[#3A4178] text-[10px] font-mono text-[#EDEAF6]"
-                >
-                  {sceneMode === "3d" ? "3D Globe" : "2D Strip"}
-                </button>
-              </div>
-            </div>
-          )}
-        </div>
 
         {/* Theme Mode Selector (Dark, Light, Custom) */}
-        <div className="relative flex-1">
+        <div className="relative shrink-0">
           <button
             onClick={() => {
               setThemeMenuOpen(!themeMenuOpen);
+              setLangMenuOpen(false);
+              setViewMenuOpen(false);
               setA11yMenuOpen(false);
             }}
-            className="w-full h-8 flex items-center justify-center rounded-lg bg-[#262B52] border border-[#3A4178] text-[#9AA3D6] hover:text-[#EDEAF6] hover:border-[#FFC66B] transition-colors"
+            className="w-8 h-8 flex items-center justify-center rounded-lg bg-[#262B52] border border-[#3A4178] text-[#9AA3D6] hover:text-[#EDEAF6] hover:border-[#FFC66B] transition-colors shrink-0"
             title="Theme Mode: Dark, Light, Custom"
           >
             {themeMode === "light" ? (
@@ -391,7 +245,7 @@ export function TopBar() {
           </button>
 
           {themeMenuOpen && (
-            <div className="absolute right-0 top-full mt-1 w-48 bg-[#262B52] border border-[#3A4178] rounded-lg shadow-xl py-1 z-50 text-xs">
+            <div className="absolute right-0 mt-1 w-48 bg-[#262B52] border border-[#3A4178] rounded-lg shadow-xl py-1 z-50 text-xs">
               <div className="px-3 py-1 text-[10px] uppercase text-[#9AA3D6] tracking-wider font-semibold">
                 {t("theme", language)}
               </div>
@@ -477,8 +331,130 @@ export function TopBar() {
             </div>
           )}
         </div>
+
+        {/* Accessibility Menu */}
+        <div className="relative shrink-0">
+          <button
+            onClick={() => {
+              setA11yMenuOpen(!a11yMenuOpen);
+              setThemeMenuOpen(false);
+              setLangMenuOpen(false);
+              setViewMenuOpen(false);
+            }}
+            className="w-8 h-8 flex items-center justify-center rounded-lg bg-[#262B52] border border-[#3A4178] text-[#9AA3D6] hover:text-[#EDEAF6] hover:border-[#FFC66B] transition-colors shrink-0"
+            title="Accessibility settings"
+          >
+            <Sliders className="w-3.5 h-3.5" />
+          </button>
+
+          {a11yMenuOpen && (
+            <div className="absolute right-0 mt-1 w-52 bg-[#262B52] border border-[#3A4178] rounded-lg shadow-xl p-2 z-50 text-xs flex flex-col gap-2">
+              <div className="font-semibold text-[#EDEAF6] pb-1 border-b border-[#3A4178]">
+                Display & Motion
+              </div>
+              <label className="flex items-center justify-between cursor-pointer">
+                <span>High Contrast</span>
+                <input
+                  type="checkbox"
+                  checked={highContrast}
+                  onChange={(e) => {
+                    setHighContrast(e.target.checked);
+                    document.documentElement.classList.toggle("high-contrast", e.target.checked);
+                  }}
+                  className="accent-[#FFC66B]"
+                />
+              </label>
+              <label className="flex items-center justify-between cursor-pointer">
+                <span>Large Text (+12.5%)</span>
+                <input
+                  type="checkbox"
+                  checked={largeText}
+                  onChange={(e) => {
+                    setLargeText(e.target.checked);
+                    document.documentElement.classList.toggle("large-text-1", e.target.checked);
+                  }}
+                  className="accent-[#FFC66B]"
+                />
+              </label>
+              <label className="flex items-center justify-between cursor-pointer">
+                <span>Reduced Motion</span>
+                <input
+                  type="checkbox"
+                  checked={reducedMotion}
+                  onChange={(e) => {
+                    setReducedMotion(e.target.checked);
+                    document.documentElement.classList.toggle("reduced-motion", e.target.checked);
+                  }}
+                  className="accent-[#FFC66B]"
+                />
+              </label>
+              <div className="flex items-center justify-between pt-1 border-t border-[#3A4178]">
+                <span>Scene View</span>
+                <button
+                  onClick={() => setSceneMode(sceneMode === "3d" ? "2d" : "3d")}
+                  className="px-2 py-0.5 rounded bg-[#3A4178] text-[10px] font-mono text-[#EDEAF6]"
+                >
+                  {sceneMode === "3d" ? "3D Globe" : "2D Strip"}
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Privacy Chip (closes a thin ring when all 3 consent) */}
+        <button
+          onClick={() => setActiveView("privacy")}
+          className={`flex items-center gap-1.5 h-8 px-2 rounded-full text-xs transition-all border whitespace-nowrap shrink-0 ${
+            allConsented
+              ? "bg-[#5FD3A0]/15 border-[#5FD3A0] text-[#5FD3A0]"
+              : "bg-[#262B52] border-[#3A4178] text-[#9AA3D6] hover:border-[#FFC66B]"
+          }`}
+          title="Caregiver load sharing consent"
+        >
+          <div className="relative w-4 h-4 flex items-center justify-center shrink-0">
+            <svg className="w-4 h-4 transform -rotate-90">
+              <circle
+                cx="8"
+                cy="8"
+                r="6"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                fill="none"
+                className="opacity-25"
+              />
+              <circle
+                cx="8"
+                cy="8"
+                r="6"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                fill="none"
+                strokeDasharray="37.7"
+                strokeDashoffset={37.7 - (37.7 * (consentedCount / totalCaregivers))}
+                className="transition-all duration-500"
+              />
+            </svg>
+            <ShieldCheck className="w-2.5 h-2.5 absolute" />
+          </div>
+          <span className="font-mono text-[10px] whitespace-nowrap">
+            {consentedCount} of {totalCaregivers} {t("sharing", language)}
+          </span>
+        </button>
       </div>
-    </aside>
+    </header>
+
+    {/* Backdrop for open dropdown menus */}
+    {(a11yMenuOpen || themeMenuOpen || viewMenuOpen || langMenuOpen) && (
+      <div
+        className="fixed inset-0 z-30 bg-transparent"
+        onClick={() => {
+          setA11yMenuOpen(false);
+          setThemeMenuOpen(false);
+          setViewMenuOpen(false);
+          setLangMenuOpen(false);
+        }}
+      />
+    )}
   </>
   );
 }

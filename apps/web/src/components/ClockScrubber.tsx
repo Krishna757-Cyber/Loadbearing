@@ -11,7 +11,6 @@ export function ClockScrubber() {
   const household = useAppStore((s) => s.household);
   const updateClock = useAppStore((s) => s.updateClock);
   const clockSkew = useAppStore((s) => s.clockSkew);
-  const addToast = useAppStore((s) => s.addToast);
 
   const [, setTick] = useState(0);
 
@@ -72,17 +71,6 @@ export function ClockScrubber() {
     handleAction("speed", { speed });
   };
 
-  const handleAdvance = (minutes: number) => {
-    const newAnchorMs = activeSimMs + minutes * 60 * 1000;
-    updateClock((prev) => ({
-      ...prev,
-      anchorSimMs: newAnchorMs,
-      anchorRealMs: Date.now() + clockSkew,
-    }));
-    handleAction("advance", { minutes });
-    addToast(`Clock advanced +${minutes >= 60 ? `${minutes / 60}h` : `${minutes}m`}`, "info");
-  };
-
   return (
     <div className="flex items-center gap-1.5 sm:gap-2 bg-[#1B2042]/95 border border-[#3A4178] px-2.5 sm:px-3 py-1 rounded-full shadow-lg text-xs select-none backdrop-blur-md">
       {/* Play / Pause Button */}
@@ -110,31 +98,6 @@ export function ClockScrubber() {
             {s}x
           </button>
         ))}
-      </div>
-
-      {/* Quick advance jump buttons (+10m, +1h, +6h) */}
-      <div className="flex items-center gap-1 border-r border-[#3A4178]/80 pr-1.5">
-        <button
-          onClick={() => handleAdvance(10)}
-          className="px-1.5 py-0.5 rounded bg-[#262B52] hover:bg-[#FFC66B] hover:text-[#14182B] text-[#9AA3D6] font-mono text-[10px] font-semibold border border-[#3A4178] hover:border-[#FFC66B] transition-all cursor-pointer active:scale-95 shadow-xs"
-          title="Advance time by 10 minutes"
-        >
-          +10m
-        </button>
-        <button
-          onClick={() => handleAdvance(60)}
-          className="px-1.5 py-0.5 rounded bg-[#262B52] hover:bg-[#FFC66B] hover:text-[#14182B] text-[#9AA3D6] font-mono text-[10px] font-semibold border border-[#3A4178] hover:border-[#FFC66B] transition-all cursor-pointer active:scale-95 shadow-xs"
-          title="Advance time by 1 hour"
-        >
-          +1h
-        </button>
-        <button
-          onClick={() => handleAdvance(360)}
-          className="px-1.5 py-0.5 rounded bg-[#262B52] hover:bg-[#FFC66B] hover:text-[#14182B] text-[#9AA3D6] font-mono text-[10px] font-semibold border border-[#3A4178] hover:border-[#FFC66B] transition-all cursor-pointer active:scale-95 shadow-xs"
-          title="Advance time by 6 hours"
-        >
-          +6h
-        </button>
       </div>
 
       {/* UTC Simulation Clock Display */}
