@@ -126,32 +126,32 @@ export function ClockScrubber() {
         ))}
       </div>
 
-      {/* Quick steps (shown on large screens) */}
-      <div className="hidden 2xl:flex items-center gap-0.5 text-[10px] font-mono">
+      {/* Quick steps */}
+      <div className="flex items-center gap-0.5 text-[10px] font-mono">
         <button
           onClick={() => handleAdvance(10)}
-          className="hover:text-[#FFC66B] px-1 py-0.5 text-[#9AA3D6]"
+          className="hover:text-[#FFC66B] px-1 py-0.5 text-[#9AA3D6] transition-colors"
           title="Advance 10 minutes"
         >
           +10m
         </button>
         <button
           onClick={() => handleAdvance(60)}
-          className="hover:text-[#FFC66B] px-1 py-0.5 text-[#9AA3D6]"
+          className="hover:text-[#FFC66B] px-1 py-0.5 text-[#9AA3D6] transition-colors"
           title="Advance 1 hour"
         >
           +1h
         </button>
         <button
           onClick={() => handleAdvance(360)}
-          className="hover:text-[#FFC66B] px-1 py-0.5 text-[#9AA3D6]"
+          className="hover:text-[#FFC66B] px-1 py-0.5 text-[#9AA3D6] transition-colors"
           title="Advance 6 hours"
         >
           +6h
         </button>
       </div>
 
-      <span className="font-mono text-[#FFC66B] px-1 font-medium whitespace-nowrap text-[11px] hidden 2xl:inline">
+      <span className="font-mono text-[#FFC66B] px-1 font-medium whitespace-nowrap text-[11px]">
         {dtUtc.toFormat("HH:mm:ss 'UTC'")}
       </span>
 

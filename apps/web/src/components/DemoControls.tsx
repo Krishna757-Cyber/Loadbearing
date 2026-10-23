@@ -1,14 +1,17 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Sliders, RotateCcw, Package, UserCheck, Bell, ChevronRight, ChevronLeft, Sparkles } from "lucide-react";
-import { useAppStore } from "@/store";
+import { Sliders, RotateCcw, Package, UserCheck, Bell, ChevronRight, ChevronLeft, Sparkles, Clock } from "lucide-react";
+import { useAppStore, computeSimNow } from "@/store";
 
 export function DemoControls() {
   const demoControlsOpen = useAppStore((s) => s.demoControlsOpen);
   const setDemoControlsOpen = useAppStore((s) => s.setDemoControlsOpen);
   const themeMode = useAppStore((s) => s.themeMode);
   const addToast = useAppStore((s) => s.addToast);
+  const household = useAppStore((s) => s.household);
+  const setHousehold = useAppStore((s) => s.setHousehold);
+  const clockSkew = useAppStore((s) => s.clockSkew);
 
   const isLight = themeMode === "light";
   const [simulating, setSimulating] = useState(false);
@@ -25,6 +28,25 @@ export function DemoControls() {
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [demoControlsOpen, setDemoControlsOpen]);
+
+  const handleAdvance = (minutes: number) => {
+    if (!household?.clock) return;
+    const activeMs = computeSimNow(household.clock, clockSkew);
+    setHousehold({
+      ...household,
+      clock: {
+        ...household.clock,
+        anchorSimMs: activeMs + minutes * 60 * 1000,
+        anchorRealMs: Date.now() + clockSkew,
+      },
+    });
+    fetch("/api/admin/clock", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ action: "advance", minutes }),
+    }).catch(() => {});
+    addToast(`Clock advanced by ${minutes >= 60 ? `${minutes / 60}h` : `${minutes}m`}`, "info");
+  };
 
   const handleReset = async () => {
     setResetting(true);
@@ -133,6 +155,59 @@ export function DemoControls() {
               >
                 Restores Priya 60%, Arjun 18.6%, Meera 21.4%
               </span>
+            </div>
+
+            {/* Fast-Forward Clock (+10m, +1h, +6h) */}
+            <div
+              className={`space-y-2 pt-2 border-t ${
+                isLight ? "border-slate-200" : "border-[#3A4178]"
+              }`}
+            >
+              <div className="flex items-center justify-between">
+                <span
+                  className={`text-[10px] uppercase font-semibold tracking-wider block ${
+                    isLight ? "text-slate-500" : "text-[#9AA3D6]"
+                  }`}
+                >
+                  Fast-Forward Clock
+                </span>
+                <Clock className="w-3.5 h-3.5 text-[#FFC66B]" />
+              </div>
+              <div className="grid grid-cols-3 gap-1.5 font-mono text-xs">
+                <button
+                  onClick={() => handleAdvance(10)}
+                  className={`py-1.5 px-2 rounded-lg border text-center transition-colors font-semibold ${
+                    isLight
+                      ? "bg-slate-50 hover:bg-slate-100 border-slate-300 text-slate-800 hover:text-amber-600"
+                      : "bg-[#14182B]/60 hover:bg-[#14182B] border-[#3A4178] text-[#EDEAF6] hover:text-[#FFC66B]"
+                  }`}
+                  title="Advance clock by 10 minutes"
+                >
+                  +10m
+                </button>
+                <button
+                  onClick={() => handleAdvance(60)}
+                  className={`py-1.5 px-2 rounded-lg border text-center transition-colors font-semibold ${
+                    isLight
+                      ? "bg-slate-50 hover:bg-slate-100 border-slate-300 text-slate-800 hover:text-amber-600"
+                      : "bg-[#14182B]/60 hover:bg-[#14182B] border-[#3A4178] text-[#EDEAF6] hover:text-[#FFC66B]"
+                  }`}
+                  title="Advance clock by 1 hour"
+                >
+                  +1h
+                </button>
+                <button
+                  onClick={() => handleAdvance(360)}
+                  className={`py-1.5 px-2 rounded-lg border text-center transition-colors font-semibold ${
+                    isLight
+                      ? "bg-slate-50 hover:bg-slate-100 border-slate-300 text-slate-800 hover:text-amber-600"
+                      : "bg-[#14182B]/60 hover:bg-[#14182B] border-[#3A4178] text-[#EDEAF6] hover:text-[#FFC66B]"
+                  }`}
+                  title="Advance clock by 6 hours"
+                >
+                  +6h
+                </button>
+              </div>
             </div>
 
             {/* Doorstep Simulator Presets */}
