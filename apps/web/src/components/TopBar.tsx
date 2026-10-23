@@ -52,18 +52,18 @@ export function TopBar() {
   const currentMember = household?.members.find((m) => m.id === viewerId);
 
   return (
-    <header className="relative z-20 flex items-center justify-between h-14 px-2 sm:px-4 bg-[#14182B]/90 backdrop-blur border-b border-[#3A4178] select-none gap-2">
+    <header className="relative z-20 flex items-center justify-between h-14 px-2 sm:px-3 lg:px-4 bg-[#14182B]/90 backdrop-blur border-b border-[#3A4178] select-none gap-1.5 lg:gap-2">
       {/* Left: Brand wordmark & view navigation */}
-      <div className="flex items-center gap-4">
-        <div className="flex items-center gap-3">
+      <div className="flex items-center gap-2 lg:gap-3 shrink-0">
+        <div className="flex items-center gap-2">
           <img
             src="/logo.png"
             alt="LoadBearing Logo"
-            className="w-9 h-9 rounded-full object-contain shrink-0 drop-shadow-[0_0_8px_rgba(255,198,107,0.4)]"
+            className="w-8 h-8 rounded-full object-contain shrink-0 drop-shadow-[0_0_8px_rgba(255,198,107,0.4)]"
           />
           <div className="flex flex-col justify-center">
             {/* 3D Gradient Wordmark: Load in Ice-White, Bearing in Metallic Gold */}
-            <div className="flex items-center font-display text-[19px] leading-none font-extrabold tracking-tight">
+            <div className="flex items-center font-display text-[17px] leading-none font-extrabold tracking-tight">
               <span className="text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
                 Load
               </span>
@@ -74,19 +74,19 @@ export function TopBar() {
 
             {/* Accent divider: Dual gold & sky-blue bar */}
             <div className="flex items-center my-0.5">
-              <span className="h-[2px] w-6 rounded-l-full bg-[#FFB84C] shadow-[0_0_4px_#FFB84C]" />
-              <span className="h-[2px] w-6 rounded-r-full bg-[#5B9CFF] shadow-[0_0_4px_#5B9CFF]" />
+              <span className="h-[2px] w-5 rounded-l-full bg-[#FFB84C] shadow-[0_0_4px_#FFB84C]" />
+              <span className="h-[2px] w-5 rounded-r-full bg-[#5B9CFF] shadow-[0_0_4px_#5B9CFF]" />
             </div>
 
             {/* Tagline */}
-            <span className="text-[10px] text-[#EDEAF6]/90 font-medium tracking-normal whitespace-nowrap hidden md:inline">
+            <span className="text-[9px] text-[#EDEAF6]/90 font-medium tracking-normal whitespace-nowrap hidden md:inline">
               {t("brandTagline", language)}
             </span>
           </div>
         </div>
 
         {/* View switcher tabs */}
-        <nav className="flex items-center gap-1 bg-[#262B52] border border-[#3A4178] p-0.5 rounded-lg text-xs shrink-0">
+        <nav className="flex items-center gap-0.5 bg-[#262B52] border border-[#3A4178] p-0.5 rounded-lg text-xs shrink-0">
           {(
             [
               { id: "map", label: t("globe", language) },
@@ -98,7 +98,7 @@ export function TopBar() {
             <button
               key={tab.id}
               onClick={() => setActiveView(tab.id)}
-              className={`px-2.5 py-1 rounded-md transition-colors whitespace-nowrap ${
+              className={`px-2 py-1 rounded-md transition-colors whitespace-nowrap text-[11px] ${
                 activeView === tab.id
                   ? "bg-[#FFC66B] text-[#14182B] font-semibold"
                   : "text-[#9AA3D6] hover:text-[#EDEAF6]"
@@ -116,16 +116,16 @@ export function TopBar() {
       </div>
 
       {/* Right: View as, Language, Theme, A11y, Privacy Chip, Handoffs */}
-      <div className="flex items-center gap-2 shrink-0">
+      <div className="flex items-center gap-1 sm:gap-1.5 shrink-0">
         {/* View As Dropdown */}
         <div className="relative shrink-0">
           <button
             onClick={() => setViewMenuOpen(!viewMenuOpen)}
-            className="flex items-center gap-1.5 h-8 px-2.5 rounded-lg bg-[#262B52] border border-[#3A4178] text-xs text-[#EDEAF6] hover:border-[#FFC66B] transition-colors whitespace-nowrap"
+            className="flex items-center gap-1 h-8 px-2 rounded-lg bg-[#262B52] border border-[#3A4178] text-xs text-[#EDEAF6] hover:border-[#FFC66B] transition-colors whitespace-nowrap"
             title="Switch caregiver view"
           >
             <Eye className="w-3.5 h-3.5 text-[#FFC66B] shrink-0" />
-            <span className="capitalize font-medium">
+            <span className="capitalize font-medium text-[11px]">
               {currentMember?.name ?? viewerId}
             </span>
             <ChevronDown className="w-3 h-3 text-[#9AA3D6] shrink-0" />
@@ -177,14 +177,12 @@ export function TopBar() {
               setViewMenuOpen(false);
               setA11yMenuOpen(false);
             }}
-            className="flex items-center gap-1.5 h-8 px-2.5 rounded-lg bg-[#262B52] border border-[#3A4178] text-xs text-[#EDEAF6] hover:border-[#FFC66B] transition-colors whitespace-nowrap"
+            className="flex items-center gap-1 h-8 px-2 rounded-lg bg-[#262B52] border border-[#3A4178] text-xs text-[#EDEAF6] hover:border-[#FFC66B] transition-colors whitespace-nowrap"
             title="Select Language / भाषा चुनें"
           >
             <Languages className="w-3.5 h-3.5 text-[#FFC66B] shrink-0" />
-            <span className="font-medium">
-              {LANGUAGES.find((l) => l.code === language)?.flag}{" "}
-              <span className="hidden 2xl:inline">{LANGUAGES.find((l) => l.code === language)?.nativeName}</span>
-              <span className="inline 2xl:hidden uppercase">{language}</span>
+            <span className="font-medium text-[11px] uppercase">
+              {LANGUAGES.find((l) => l.code === language)?.flag} {language}
             </span>
             <ChevronDown className="w-3 h-3 text-[#9AA3D6] shrink-0" />
           </button>
@@ -225,20 +223,16 @@ export function TopBar() {
               setViewMenuOpen(false);
               setA11yMenuOpen(false);
             }}
-            className="flex items-center gap-1.5 h-8 px-2.5 rounded-lg bg-[#262B52] border border-[#3A4178] text-xs text-[#EDEAF6] hover:border-[#FFC66B] transition-colors whitespace-nowrap"
+            className="w-8 h-8 flex items-center justify-center rounded-lg bg-[#262B52] border border-[#3A4178] text-[#9AA3D6] hover:text-[#EDEAF6] hover:border-[#FFC66B] transition-colors shrink-0"
             title="Theme Mode: Dark, Light, Custom"
           >
             {themeMode === "light" ? (
-              <Sun className="w-3.5 h-3.5 text-[#FFC66B] shrink-0" />
+              <Sun className="w-3.5 h-3.5 text-[#FFC66B]" />
             ) : themeMode === "dark" ? (
-              <Moon className="w-3.5 h-3.5 text-[#9AA3D6] shrink-0" />
+              <Moon className="w-3.5 h-3.5 text-[#9AA3D6]" />
             ) : (
-              <Palette className="w-3.5 h-3.5 text-[#FFC66B] shrink-0" />
+              <Palette className="w-3.5 h-3.5 text-[#FFC66B]" />
             )}
-            <span className="capitalize hidden 2xl:inline">
-              {themeMode === "dark" ? t("dark", language) : themeMode === "light" ? t("light", language) : t("custom", language)}
-            </span>
-            <ChevronDown className="w-3 h-3 text-[#9AA3D6] shrink-0" />
           </button>
 
           {themeMenuOpen && (
@@ -396,7 +390,7 @@ export function TopBar() {
         {/* Privacy Chip (closes a thin ring when all 3 consent) */}
         <button
           onClick={() => setActiveView("privacy")}
-          className={`flex items-center gap-1.5 h-8 px-2.5 rounded-full text-xs transition-all border whitespace-nowrap shrink-0 ${
+          className={`flex items-center gap-1 h-8 px-2 rounded-full text-xs transition-all border whitespace-nowrap shrink-0 ${
             allConsented
               ? "bg-[#5FD3A0]/15 border-[#5FD3A0] text-[#5FD3A0]"
               : "bg-[#262B52] border-[#3A4178] text-[#9AA3D6] hover:border-[#FFC66B]"
@@ -428,7 +422,7 @@ export function TopBar() {
             </svg>
             <ShieldCheck className="w-2.5 h-2.5 absolute" />
           </div>
-          <span className="font-mono text-[11px] whitespace-nowrap">
+          <span className="font-mono text-[10px] whitespace-nowrap">
             {consentedCount} of {totalCaregivers} {t("sharing", language)}
           </span>
         </button>
@@ -436,7 +430,7 @@ export function TopBar() {
         {/* Toggle Handoffs Drawer */}
         <button
           onClick={() => setDrawerOpen(!drawerOpen)}
-          className={`flex items-center gap-1.5 h-8 px-2.5 rounded-lg text-xs transition-colors border whitespace-nowrap shrink-0 ${
+          className={`flex items-center gap-1 h-8 px-2 rounded-lg text-xs transition-colors border whitespace-nowrap shrink-0 ${
             drawerOpen
               ? "bg-[#FFC66B] text-[#14182B] font-semibold border-[#FFC66B]"
               : "bg-[#262B52] border-[#3A4178] text-[#EDEAF6] hover:border-[#FFC66B]"
@@ -444,7 +438,7 @@ export function TopBar() {
           title={drawerOpen ? "Close Handoffs Drawer" : "Open Handoffs Drawer"}
         >
           <Inbox className="w-3.5 h-3.5 shrink-0" />
-          <span>{t("handoffs", language)}</span>
+          <span className="text-[11px] hidden sm:inline">{t("handoffs", language)}</span>
           {(household?.handoffs?.length ?? 0) > 0 && (
             <span
               className={`px-1.5 py-0.2 rounded-full text-[10px] font-mono shrink-0 ${

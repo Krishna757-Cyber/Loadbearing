@@ -151,7 +151,7 @@ export function ClockScrubber() {
         </button>
       </div>
 
-      <span className="font-mono text-[#FFC66B] px-1 font-medium whitespace-nowrap text-[11px]">
+      <span className="font-mono text-[#FFC66B] px-1 font-medium whitespace-nowrap text-[11px] hidden 2xl:inline">
         {dtUtc.toFormat("HH:mm:ss 'UTC'")}
       </span>
 
