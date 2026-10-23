@@ -138,14 +138,14 @@ export function ClockScrubber() {
       </div>
 
       {/* UTC Simulation Clock Display */}
-      <div className="flex items-center px-1 border-r border-[#3A4178]/80">
+      <div className="flex items-center px-1.5">
         <span className="font-mono text-[#FFC66B] font-semibold whitespace-nowrap text-[11px] tracking-tight">
           {dtUtc.toFormat("HH:mm:ss 'UTC'")}
         </span>
       </div>
 
-      {/* Multi-timezone caregiver city clocks */}
-      <div className="flex items-center gap-1.5 pl-1 text-[10px] text-[#9AA3D6] whitespace-nowrap">
+      {/* Multi-timezone caregiver city clocks (shown on wider displays) */}
+      <div className="hidden xl:flex items-center gap-1.5 pl-1.5 border-l border-[#3A4178]/80 text-[10px] text-[#9AA3D6] whitespace-nowrap">
         <span>
           Pune <strong className="text-[#EDEAF6] font-mono font-semibold">{dtPune.toFormat("HH:mm")}</strong>
         </span>

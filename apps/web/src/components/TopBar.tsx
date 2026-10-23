@@ -79,7 +79,7 @@ export function TopBar() {
             </div>
 
             {/* Tagline */}
-            <span className="text-[9px] text-[#EDEAF6]/90 font-medium tracking-normal whitespace-nowrap hidden md:inline">
+            <span className="text-[9px] text-[#EDEAF6]/90 font-medium tracking-normal whitespace-nowrap hidden 2xl:inline">
               {t("brandTagline", language)}
             </span>
           </div>
@@ -423,7 +423,8 @@ export function TopBar() {
             <ShieldCheck className="w-2.5 h-2.5 absolute" />
           </div>
           <span className="font-mono text-[10px] whitespace-nowrap">
-            {consentedCount} of {totalCaregivers} {t("sharing", language)}
+            {consentedCount} of {totalCaregivers}
+            <span className="hidden xl:inline"> {t("sharing", language)}</span>
           </span>
         </button>
 
@@ -438,7 +439,7 @@ export function TopBar() {
           title={drawerOpen ? "Close Handoffs Drawer" : "Open Handoffs Drawer"}
         >
           <Inbox className="w-3.5 h-3.5 shrink-0" />
-          <span className="text-[11px] hidden sm:inline">{t("handoffs", language)}</span>
+          <span className="text-[11px] hidden xl:inline">{t("handoffs", language)}</span>
           {(household?.handoffs?.length ?? 0) > 0 && (
             <span
               className={`px-1.5 py-0.2 rounded-full text-[10px] font-mono shrink-0 ${
