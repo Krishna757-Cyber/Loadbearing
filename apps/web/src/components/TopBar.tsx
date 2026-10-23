@@ -52,7 +52,7 @@ export function TopBar() {
   const currentMember = household?.members.find((m) => m.id === viewerId);
 
   return (
-    <header className="relative z-20 flex items-center justify-between h-14 px-4 bg-[#14182B]/90 backdrop-blur border-b border-[#3A4178] select-none">
+    <header className="relative z-20 flex items-center justify-between h-14 px-2 sm:px-4 bg-[#14182B]/90 backdrop-blur border-b border-[#3A4178] select-none gap-2">
       {/* Left: Brand wordmark & view navigation */}
       <div className="flex items-center gap-4">
         <div className="flex items-center gap-3">
@@ -78,8 +78,8 @@ export function TopBar() {
               <span className="h-[2px] w-6 rounded-r-full bg-[#5B9CFF] shadow-[0_0_4px_#5B9CFF]" />
             </div>
 
-            {/* Tagline */}
-            <span className="text-[10px] text-[#EDEAF6]/90 font-medium tracking-normal whitespace-nowrap hidden md:inline">
+            {/* Tagline (hidden on smaller/laptop screens to prevent navbar overflow) */}
+            <span className="text-[10px] text-[#EDEAF6]/90 font-medium tracking-normal whitespace-nowrap hidden 2xl:inline">
               {t("brandTagline", language)}
             </span>
           </div>
@@ -183,7 +183,8 @@ export function TopBar() {
             <Languages className="w-3.5 h-3.5 text-[#FFC66B] shrink-0" />
             <span className="font-medium">
               {LANGUAGES.find((l) => l.code === language)?.flag}{" "}
-              {LANGUAGES.find((l) => l.code === language)?.nativeName}
+              <span className="hidden 2xl:inline">{LANGUAGES.find((l) => l.code === language)?.nativeName}</span>
+              <span className="inline 2xl:hidden uppercase">{language}</span>
             </span>
             <ChevronDown className="w-3 h-3 text-[#9AA3D6] shrink-0" />
           </button>
@@ -234,7 +235,7 @@ export function TopBar() {
             ) : (
               <Palette className="w-3.5 h-3.5 text-[#FFC66B] shrink-0" />
             )}
-            <span className="capitalize">
+            <span className="capitalize hidden 2xl:inline">
               {themeMode === "dark" ? t("dark", language) : themeMode === "light" ? t("light", language) : t("custom", language)}
             </span>
             <ChevronDown className="w-3 h-3 text-[#9AA3D6] shrink-0" />
@@ -427,7 +428,7 @@ export function TopBar() {
             </svg>
             <ShieldCheck className="w-2.5 h-2.5 absolute" />
           </div>
-          <span className="font-mono text-[11px] whitespace-nowrap">
+          <span className="font-mono text-[11px] whitespace-nowrap hidden lg:inline">
             {consentedCount} of {totalCaregivers} {t("sharing", language)}
           </span>
         </button>
@@ -443,7 +444,7 @@ export function TopBar() {
           title={drawerOpen ? "Close Handoffs Drawer" : "Open Handoffs Drawer"}
         >
           <Inbox className="w-3.5 h-3.5 shrink-0" />
-          <span>{t("handoffs", language)}</span>
+          <span className="hidden sm:inline">{t("handoffs", language)}</span>
           {(household?.handoffs?.length ?? 0) > 0 && (
             <span
               className={`px-1.5 py-0.2 rounded-full text-[10px] font-mono shrink-0 ${
